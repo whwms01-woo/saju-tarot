@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>운명의 별빛 - 타로 & 사주</title>
+    <style>
+        :root {
+            --primary: #9b51e0;
+            --secondary: #f2994a;
+            --bg-color: #0f0c29;
+            --bg-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #ffffff;
+            --text-muted: #b0a8b9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Background Stars/Effects */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            padding: 40px 20px;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #e0c3fc, #8ec5fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 32px 0 rgba(155, 81, 224, 0.3);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* View Sections */
+        .view-section {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.5s ease;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .view-section.active {
+            display: flex;
+        }
+
+        /* Tarot Cards */
+        .tarot-deck {
+            display: flex;
+            gap: 10px;
+            margin: 30px 0;
+            position: relative;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .tarot-card {
+            width: 100px;
+            height: 160px;
+            background-color: #1a1025;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #b892ff;
+            border-radius: 10px;
+            margin: 5px 5px 15px 5px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .tarot-card:hover {
+            transform: translateY(-20px) scale(1.1);
+            box-shadow: 0 15px 30px rgba(184, 146, 255, 0.4);
+            border-color: #fff;
+        }
+
+        .result-box {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+            display: none;
+        }
+        
+        .result-title {
+            color: #e0c3fc;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+            width: 100%;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #9b51e0, #56ccf2);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(155, 81, 224, 0.4);
+        }
+
+        .back-btn {
+            background: transparent;
+            border: 1px solid var(--text-muted);
+            color: var(--text-muted);
+            margin-top: 30px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="container">
+        <header>
+            <h1>운명의 별빛</h1>
+            <p class="subtitle">당신의 과거, 현재, 그리고 미래</p>
+        </header>
+
+        <!-- Main Menu -->
+        <div id="main-menu" class="view-section active">
+            <div class="menu-grid">
+                <div class="glass-card" onclick="showSection('tarot-section')">
+                    <span class="card-icon">🃏</span>
+                    <span class="card-title">오늘의 타로</span>
+                </div>
+                <div class="glass-card" onclick="showSection('saju-section')">
+                    <span class="card-icon">📜</span>
+                    <span class="card-title">사주 팔자</span>
+                </div>
+            </div>
+            <p style="color: var(--text-muted); text-align: center; font-size: 0.85rem; margin-top: 20px;">
+                우주의 기운을 모아 당신의 길을 비춰드립니다.
+            </p>
+        </div>
+
+        <!-- Tarot Section -->
+        <div id="tarot-section" class="view-section">
+            <h2 style="margin-bottom: 10px;">어떤 운세가 궁금하신가요?</h2>
+            <div class="form-group" style="max-width: 250px; margin: 0 auto 20px auto;">
+                <select id="tarot-topic" class="form-control" style="text-align: center; text-align-last: center;">
+                    <option value="오늘의 전반적인 운세">🌟 오늘의 운세</option>
+                    <option value="연애/애정운">💕 연애/애정운</option>
+                    <option value="금전/재물운">💰 금전/재물운</option>
+                    <option value="직장/학업운">💼 직장/학업운</option>
+                    <option value="인간관계운">🤝 인간관계운</option>
+                </select>
+            </div>
+            <h3 style="margin-bottom: 20px; color: var(--text-muted); font-size: 1rem;">주제를 선택한 후, 끌리는 카드를 뽑아주세요</h3>
+            <div class="tarot-deck">
+                <div class="tarot-card" onclick="drawTarot(0)" style="background-image: url('https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=200&q=80')"></div>
+                <div class="tarot-card" onclick="drawTarot(1)" style="background-image: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=200&q=80')"></div>
+                <div class="tarot-card" onclick="drawTarot(2)" style="background-image: url('https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&w=200&q=80')"></div>
+                <div class="tarot-card" onclick="drawTarot(3)" style="background-image: url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?auto=format&fit=crop&w=200&q=80')"></div>
+                <div class="tarot-card" onclick="drawTarot(4)" style="background-image: url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&w=200&q=80')"></div>
+                <div class="tarot-card" onclick="drawTarot(5)" style="background-image: url('https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?auto=format&fit=crop&w=200&q=80')"></div>
+                <div class="tarot-card" onclick="drawTarot(6)" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=200&q=80')"></div>
+            </div>
+            
+            <div id="tarot-result" class="result-box">
+                <!-- 결과 렌더링 영역 -->
+            </div>
+            
+            <button class="btn back-btn" onclick="showSection('main-menu')">처음으로 돌아가기</button>
+        </div>
+
+        <!-- Saju Section -->
+        <div id="saju-section" class="view-section">
+            <h2 style="margin-bottom: 20px;">사주 정보 입력</h2>
+            
+            <div class="glass-card" style="width: 100%; padding: 25px;">
+                <div class="form-group">
+                    <label>이름</label>
+                    <input type="text" id="saju-name" class="form-control" placeholder="홍길동">
+                </div>
+                <div class="form-group">
+                    <label>사는 지역 (선택)</label>
+                    <input type="text" id="saju-region" class="form-control" placeholder="예: 서울특별시 강남구">
+                </div>
+                <div class="form-group">
+                    <label>생년월일</label>
+                    <div style="display: flex; gap: 10px;">
+                        <select id="saju-year" class="form-control"></select>
+                        <select id="saju-month" class="form-control"></select>
+                        <select id="saju-day" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>태어난 시간</label>
+                    <select id="saju-time" class="form-control">
+                        <option>모름</option>
+                        <option>자시 (23:30 ~ 01:29)</option>
+                        <option>축시 (01:30 ~ 03:29)</option>
+                        <option>인시 (03:30 ~ 05:29)</option>
+                        <option>묘시 (05:30 ~ 07:29)</option>
+                        <option>진시 (07:30 ~ 09:29)</option>
+                        <option>기타 시간대...</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="analyzeSaju()">사주 풀이 시작</button>
+            </div>
+
+            <div id="saju-result" class="result-box">
+                <h3 class="result-title">🌙 당신의 킹받는 사주 요약</h3>
+                <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNG15YWFtcTdyZ3MwZHVyemc5YXM5bTFteWNxZHpobW8xeXV6NThlZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L0qTl8hl84EDly62J1/giphy.webp" alt="MZ감성 짤" style="width: 100%; border-radius: 10px; margin-bottom: 15px;">
+                <p style="line-height: 1.6; font-size: 1.05rem; font-weight: bold;">
+                    "인생은 멘탈 싸움! 당신은 강철 멘탈의 소유자 🛡️"<br>
+                    <span style="font-weight: normal; font-size: 0.9rem; color: var(--text-muted);">올해는 숨만 쉬어도 돈 들어오는 해임. 존버 승리각 보이니까 하던 거 계속 하셈. 통장 잔고 보고 웃을 일 많을 듯 💸</span>
+                </p>
+            </div>
+
+            <button class="btn back-btn" onclick="showSection('main-menu')">처음으로 돌아가기</button>
+        </div>
+
+    </div>
+
+    <script>
+        // 생년월일 드롭다운 초기화
+        window.onload = function() {
+            const yearSelect = document.getElementById('saju-year');
+            const monthSelect = document.getElementById('saju-month');
+            const daySelect = document.getElementById('saju-day');
+
+            yearSelect.innerHTML = '<option value="">년도</option>';
+            for(let i = 2026; i >= 1930; i--) yearSelect.innerHTML += `<option value="${i}">${i}년</option>`;
+
+            monthSelect.innerHTML = '<option value="">월</option>';
+            for(let i = 1; i <= 12; i++) monthSelect.innerHTML += `<option value="${i}">${i}월</option>`;
+
+            daySelect.innerHTML = '<option value="">일</option>';
+            for(let i = 1; i <= 31; i++) daySelect.innerHTML += `<option value="${i}">${i}일</option>`;
+        };
+
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.remove('active');
+            });
+            // Show target section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Reset results
+            document.getElementById('tarot-result').style.display = 'none';
+            document.getElementById('saju-result').style.display = 'none';
+        }
+
+        const tarotCards = [
+            "THE FOOL (바보)",
+            "THE MAGICIAN (마법사)",
+            "THE HIGH PRIESTESS (고위 여사제)",
+            "THE EMPRESS (여황제)",
+            "THE EMPEROR (황제)",
+            "THE HIEROPHANT (교황)",
+            "THE LOVERS (연인)"
+        ];
+        
+        const tarotImages = [
+            "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=200&q=80",
+            "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=200&q=80",
+            "https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&w=200&q=80",
+            "https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?auto=format&fit=crop&w=200&q=80",
+            "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&w=200&q=80",
+            "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?auto=format&fit=crop&w=200&q=80",
+            "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=200&q=80"
+        ];
+
+        async function drawTarot(index) {
+            // Randomly select if not provided
+            const dataIndex = (index !== undefined) ? (index % tarotCards.length) : Math.floor(Math.random() * tarotCards.length);
+            const cardName = tarotCards[dataIndex];
+            const cardImg = tarotImages[dataIndex];
+            const topic = document.getElementById('tarot-topic').value;
+            
+            const resultBox = document.getElementById('tarot-result');
+            
+            // Show loading state
+            resultBox.innerHTML = `
+                <div style="padding: 40px 20px; text-align: center; color: #b892ff;">
+                    <span style="font-size: 2rem; display: block; margin-bottom: 15px; animation: pulse 1.5s infinite;">🔮</span>
+                    우주의 기운을 모아<br>AI가 타로를 해석하고 있습니다...
+                </div>
+            `;
+            resultBox.style.display = 'block';
+            resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+            try {
+                // Call the backend API
+                const response = await fetch('/api/tarot', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ cardIndex: dataIndex, cardName: cardName, topic: topic })
+                });
+                
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                
+                // Render the real AI result
+                resultBox.innerHTML = `
+                    <h3 class="result-title">🌟 ${cardName}</h3>
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
+                        <img src="${cardImg}" alt="타로 카드" style="width: 30%; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); object-fit: cover;">
+                        ${data.imageUrl ? `<img src="${data.imageUrl}" alt="AI 맞춤 짤" style="width: 65%; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); object-fit: cover;">` : ''}
+                    </div>
+                    <p style="line-height: 1.6; font-size: 1.05rem; font-weight: bold;">
+                        "${data.quote}"<br>
+                        <span style="font-weight: normal; font-size: 0.95rem; color: var(--text-muted); display: block; margin-top: 10px;">${data.desc}</span>
+                    </p>
+                `;
+            } catch (error) {
+                console.error(error);
+                resultBox.innerHTML = `<p style="color: #ff6b6b; padding: 20px;">서버와 통신 중 오류가 발생했습니다. 서버가 실행 중인지 확인해주세요!</p>`;
+            }
+            
+            // Re-trigger animation
+            resultBox.style.animation = 'none';
+            resultBox.offsetHeight; /* trigger reflow */
+            resultBox.style.animation = 'fadeIn 1s ease';
+        }
+
+        async function analyzeSaju() {
+            const btn = document.querySelector('#saju-section .btn');
+            const originalText = btn.innerText;
+            const resultBox = document.getElementById('saju-result');
+            
+            // Get user inputs
+            const name = document.getElementById('saju-name').value;
+            const region = document.getElementById('saju-region').value;
+            const year = document.getElementById('saju-year').value;
+            const month = document.getElementById('saju-month').value;
+            const day = document.getElementById('saju-day').value;
+            const birthTime = document.getElementById('saju-time').value;
+            
+            let birthDate = "";
+            if(year && month && day) birthDate = `${year}년 ${month}월 ${day}일`;
+            
+            btn.innerText = 'AI가 우주의 기운을 엮는 중... 🌌';
+            btn.disabled = true;
+
+            // Show loading state
+            resultBox.innerHTML = `
+                <div style="padding: 40px 20px; text-align: center; color: #b892ff;">
+                    <span style="font-size: 2rem; display: block; margin-bottom: 15px; animation: pulse 1.5s infinite;">📜</span>
+                    AI 명리학 도사가 당신의 사주를<br>분석하고 있습니다...
+                </div>
+            `;
+            resultBox.style.display = 'block';
+            resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            try {
+                // Call the backend API
+                const response = await fetch('/api/saju', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, region, birthDate, birthTime })
+                });
+                
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                
+                // Render the real AI result
+                resultBox.innerHTML = `
+                    <h3 class="result-title">🌙 당신의 맞춤 사주 요약</h3>
+                    ${data.imageUrl ? `<img src="${data.imageUrl}" alt="AI 맞춤 짤" style="width: 100%; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">` : ''}
+                    <p style="line-height: 1.6; font-size: 1.05rem; font-weight: bold; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; border: 1px solid var(--glass-border);">
+                        "${data.quote}"<br>
+                        <span style="font-weight: normal; font-size: 0.95rem; color: var(--text-muted); display: block; margin-top: 15px;">${data.desc}</span>
+                    </p>
+                `;
+            } catch (error) {
+                console.error(error);
+                resultBox.innerHTML = `<p style="color: #ff6b6b; padding: 20px;">서버와 통신 중 오류가 발생했습니다. 서버가 실행 중인지 확인해주세요!</p>`;
+            }
+
+            btn.innerText = originalText;
+            btn.disabled = false;
+            
+            // Re-trigger animation
+            resultBox.style.animation = 'none';
+            resultBox.offsetHeight;
+            resultBox.style.animation = 'fadeIn 1s ease';
+        }
+    </script>
+</body>
+</html>
