@@ -24,7 +24,7 @@ app.post('/api/tarot', async (req, res) => {
         const { cards } = req.body;
         
         const model = genAI.getGenerativeModel({ 
-            model: "gemini-1.5-flash-latest",
+            model: "gemini-1.5-flash",
             generationConfig: { responseMimeType: "application/json" }
         });
         
@@ -69,7 +69,7 @@ app.post('/api/saju', async (req, res) => {
         const { name, region, birthDate, birthTime } = req.body;
         
         const model = genAI.getGenerativeModel({ 
-            model: "gemini-1.5-flash-latest",
+            model: "gemini-1.5-flash",
             generationConfig: { responseMimeType: "application/json" }
         });
         
