@@ -249,6 +249,53 @@
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* 4-cut Comic Grid */
+        .comic-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .comic-cut {
+            background: rgba(0,0,0,0.3);
+            border: 2px solid #b892ff;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.5s ease backwards;
+        }
+        .comic-cut:nth-child(1) { animation-delay: 0.1s; }
+        .comic-cut:nth-child(2) { animation-delay: 0.3s; }
+        .comic-cut:nth-child(3) { animation-delay: 0.5s; }
+        .comic-cut:nth-child(4) { animation-delay: 0.7s; }
+        
+        .comic-img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .comic-title {
+            font-size: 0.95rem;
+            color: #f2994a;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .comic-desc {
+            font-size: 0.85rem;
+            color: #fff;
+            line-height: 1.4;
+            word-break: keep-all;
+        }
+        @media (max-width: 400px) {
+            .comic-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -437,17 +484,27 @@
                 const data = await response.json();
                 
                 // Render the real AI result
-                resultBox.innerHTML = `
-                    <h3 class="result-title">🌟 ${cardName}</h3>
-                    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
-                        <img src="${cardImg}" alt="타로 카드" style="width: 30%; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); object-fit: cover;">
-                        ${data.imageUrl ? `<img src="${data.imageUrl}" alt="AI 맞춤 짤" style="width: 65%; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); object-fit: cover;">` : ''}
+                let comicHtml = '<div class="comic-grid">';
+                if(data.comic && data.comic.length > 0) {
+                    data.comic.forEach(cut => {
+                        comicHtml += \`
+                            <div class="comic-cut">
+                                <h4 class="comic-title">\${cut.title}</h4>
+                                <img src="\${cut.imageUrl || cardImg}" class="comic-img" alt="만화 컷">
+                                <p class="comic-desc">\${cut.desc}</p>
+                            </div>
+                        \`;
+                    });
+                }
+                comicHtml += '</div>';
+
+                resultBox.innerHTML = \`
+                    <h3 class="result-title">🌟 \${cardName}</h3>
+                    <div style="display: flex; justify-content: center; margin-bottom: 15px;">
+                        <img src="\${cardImg}" alt="타로 카드" style="width: 30%; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); object-fit: cover;">
                     </div>
-                    <p style="line-height: 1.6; font-size: 1.05rem; font-weight: bold;">
-                        "${data.quote}"<br>
-                        <span style="font-weight: normal; font-size: 0.95rem; color: var(--text-muted); display: block; margin-top: 10px;">${data.desc}</span>
-                    </p>
-                `;
+                    \${comicHtml}
+                \`;
             } catch (error) {
                 console.error(error);
                 resultBox.innerHTML = `<p style="color: #ff6b6b; padding: 20px;">서버와 통신 중 오류가 발생했습니다. 서버가 실행 중인지 확인해주세요!</p>`;
@@ -500,14 +557,24 @@
                 const data = await response.json();
                 
                 // Render the real AI result
-                resultBox.innerHTML = `
-                    <h3 class="result-title">🌙 당신의 맞춤 사주 요약</h3>
-                    ${data.imageUrl ? `<img src="${data.imageUrl}" alt="AI 맞춤 짤" style="width: 100%; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">` : ''}
-                    <p style="line-height: 1.6; font-size: 1.05rem; font-weight: bold; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; border: 1px solid var(--glass-border);">
-                        "${data.quote}"<br>
-                        <span style="font-weight: normal; font-size: 0.95rem; color: var(--text-muted); display: block; margin-top: 15px;">${data.desc}</span>
-                    </p>
-                `;
+                let comicHtml = '<div class="comic-grid">';
+                if(data.comic && data.comic.length > 0) {
+                    data.comic.forEach(cut => {
+                        comicHtml += \`
+                            <div class="comic-cut">
+                                <h4 class="comic-title">\${cut.title}</h4>
+                                <img src="\${cut.imageUrl}" class="comic-img" alt="만화 컷">
+                                <p class="comic-desc">\${cut.desc}</p>
+                            </div>
+                        \`;
+                    });
+                }
+                comicHtml += '</div>';
+
+                resultBox.innerHTML = \`
+                    <h3 class="result-title">🌙 당신의 맞춤 사주 4컷 만화</h3>
+                    \${comicHtml}
+                \`;
             } catch (error) {
                 console.error(error);
                 resultBox.innerHTML = `<p style="color: #ff6b6b; padding: 20px;">서버와 통신 중 오류가 발생했습니다. 서버가 실행 중인지 확인해주세요!</p>`;
