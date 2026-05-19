@@ -135,31 +135,63 @@
         /* Tarot Cards */
         .tarot-deck {
             display: flex;
-            gap: 10px;
-            margin: 30px 0;
+            gap: 5px;
+            margin: 20px 0;
             position: relative;
             justify-content: center;
             flex-wrap: wrap;
+            max-width: 450px;
         }
 
         .tarot-card {
-            width: 100px;
-            height: 160px;
-            background-color: #1a1025;
-            background-size: cover;
-            background-position: center;
-            border: 2px solid #b892ff;
-            border-radius: 10px;
-            margin: 5px 5px 15px 5px;
+            width: 45px;
+            height: 70px;
+            background: linear-gradient(135deg, #2c1b4d, #1a1025);
+            border: 1px solid #b892ff;
+            border-radius: 5px;
+            margin: 2px;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: transparent;
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 5px, transparent 5px, transparent 10px);
+            font-size: 0.55rem;
+            padding: 2px;
+            word-break: keep-all;
         }
 
         .tarot-card:hover {
-            transform: translateY(-20px) scale(1.1);
-            box-shadow: 0 15px 30px rgba(184, 146, 255, 0.4);
+            transform: translateY(-5px);
             border-color: #fff;
+        }
+
+        .tarot-card.selected {
+            transform: translateY(-10px);
+            box-shadow: 0 5px 15px rgba(184, 146, 255, 0.6);
+            border-color: #f2994a;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .tarot-card.face-up {
+            background: linear-gradient(135deg, #4a235a, #150050);
+            color: #f1c40f;
+            border-color: #f1c40f;
+            background-image: none;
+            transform: rotateY(360deg) scale(1.1);
+            pointer-events: none;
+            font-weight: bold;
+        }
+
+        .draw-instruction {
+            color: var(--secondary);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-align: center;
         }
 
         .result-box {
@@ -340,15 +372,10 @@
 
         <!-- Tarot Section -->
         <div id="tarot-section" class="view-section">
-            <h2 style="margin-bottom: 20px;">끌리는 카드를 한 장 뽑아주세요</h2>
+            <h2 style="margin-bottom: 10px;">과거, 현재, 미래를 잇는 타로</h2>
+            <div id="tarot-instruction" class="draw-instruction">카드를 3장 뽑아주세요 (과거/현재/미래)</div>
             <div class="tarot-deck">
-                <div class="tarot-card" onclick="drawTarot(0)" style="background-image: url('https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=200&q=80')"></div>
-                <div class="tarot-card" onclick="drawTarot(1)" style="background-image: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=200&q=80')"></div>
-                <div class="tarot-card" onclick="drawTarot(2)" style="background-image: url('https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&w=200&q=80')"></div>
-                <div class="tarot-card" onclick="drawTarot(3)" style="background-image: url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?auto=format&fit=crop&w=200&q=80')"></div>
-                <div class="tarot-card" onclick="drawTarot(4)" style="background-image: url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&w=200&q=80')"></div>
-                <div class="tarot-card" onclick="drawTarot(5)" style="background-image: url('https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?auto=format&fit=crop&w=200&q=80')"></div>
-                <div class="tarot-card" onclick="drawTarot(6)" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=200&q=80')"></div>
+                <!-- Cards dynamically injected -->
             </div>
             
             <div id="tarot-result" class="result-box">
@@ -444,97 +471,123 @@
             // Reset results
             document.getElementById('tarot-result').style.display = 'none';
             document.getElementById('saju-result').style.display = 'none';
+
+            if(sectionId === 'tarot-section') {
+                renderTarotDeck();
+            }
         }
 
-        const tarotCards = [
-            "THE FOOL (바보)",
-            "THE MAGICIAN (마법사)",
-            "THE HIGH PRIESTESS (고위 여사제)",
-            "THE EMPRESS (여황제)",
-            "THE EMPEROR (황제)",
-            "THE HIEROPHANT (교황)",
-            "THE LOVERS (연인)"
-        ];
-        
-        const tarotImages = [
-            "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=200&q=80",
-            "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=200&q=80",
-            "https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&w=200&q=80",
-            "https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?auto=format&fit=crop&w=200&q=80",
-            "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&w=200&q=80",
-            "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?auto=format&fit=crop&w=200&q=80",
-            "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=200&q=80"
+        const majorArcana = [
+            "0. THE FOOL (바보)", "1. THE MAGICIAN (마법사)", "2. THE HIGH PRIESTESS (고위 여사제)",
+            "3. THE EMPRESS (여황제)", "4. THE EMPEROR (황제)", "5. THE HIEROPHANT (교황)",
+            "6. THE LOVERS (연인)", "7. THE CHARIOT (전차)", "8. STRENGTH (힘)",
+            "9. THE HERMIT (은둔자)", "10. WHEEL OF FORTUNE (운명의 수레바퀴)", "11. JUSTICE (정의)",
+            "12. THE HANGED MAN (매달린 사람)", "13. DEATH (죽음)", "14. TEMPERANCE (절제)",
+            "15. THE DEVIL (악마)", "16. THE TOWER (탑)", "17. THE STAR (별)",
+            "18. THE MOON (달)", "19. THE SUN (태양)", "20. JUDGEMENT (심판)", "21. THE WORLD (세계)"
         ];
 
-        async function drawTarot(index) {
-            // Randomly select if not provided
-            const dataIndex = (index !== undefined) ? (index % tarotCards.length) : Math.floor(Math.random() * tarotCards.length);
-            const cardName = tarotCards[dataIndex];
-            const cardImg = tarotImages[dataIndex];
+        let selectedCards = [];
+
+        function renderTarotDeck() {
+            const deckDiv = document.querySelector('.tarot-deck');
+            deckDiv.innerHTML = '';
+            selectedCards = [];
+            document.getElementById('tarot-instruction').innerText = "카드를 3장 뽑아주세요 (과거/현재/미래)";
             
+            let shuffled = [...majorArcana].sort(() => Math.random() - 0.5);
+            
+            shuffled.forEach((card) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = 'tarot-card';
+                cardEl.onclick = () => selectCard(cardEl, card);
+                deckDiv.appendChild(cardEl);
+            });
+        }
+
+        function selectCard(cardEl, cardName) {
+            if (selectedCards.length >= 3 || cardEl.classList.contains('selected')) return;
+            
+            cardEl.classList.add('selected');
+            cardEl.innerText = cardName.split(' ')[0]; // Show number temporarily
+            selectedCards.push(cardName);
+
+            const instruction = document.getElementById('tarot-instruction');
+            if (selectedCards.length === 1) instruction.innerText = "현재 상황을 나타낼 두 번째 카드를 뽑아주세요.";
+            if (selectedCards.length === 2) instruction.innerText = "미래를 나타낼 세 번째 카드를 뽑아주세요.";
+            if (selectedCards.length === 3) {
+                instruction.innerText = "우주의 기운을 읽는 중...";
+                setTimeout(() => {
+                    document.querySelectorAll('.tarot-card.selected').forEach(el => {
+                        el.classList.add('face-up');
+                        // Show name when face up
+                        const cName = selectedCards[Array.from(document.querySelectorAll('.tarot-card.selected')).indexOf(el)];
+                        el.innerText = cName.split('(')[1].replace(')','');
+                    });
+                    drawTarotReading();
+                }, 500);
+            }
+        }
+
+        async function drawTarotReading() {
             const resultBox = document.getElementById('tarot-result');
             
-            // Show loading state
             resultBox.innerHTML = `
                 <div style="padding: 40px 20px; text-align: center; color: #b892ff;">
                     <span style="font-size: 2rem; display: block; margin-bottom: 15px; animation: pulse 1.5s infinite;">🔮</span>
-                    우주의 기운을 모아<br>AI가 타로를 해석하고 있습니다...
+                    과거, 현재, 미래의 흐름을<br>AI가 분석하고 있습니다...
                 </div>
             `;
             resultBox.style.display = 'block';
             resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             
             try {
-                // Call the backend API
                 const response = await fetch('/api/tarot', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ cardIndex: dataIndex, cardName: cardName })
+                    body: JSON.stringify({ cards: selectedCards })
                 });
                 
                 if (!response.ok) throw new Error('Network response was not ok');
                 const data = await response.json();
                 
-                // Render the real AI result
                 let tabsHtml = `
                     <div class="tab-container">
                         <div class="tab-buttons">
-                            <button id="tarot-btn-today" class="tab-btn tarot-tab-btn active" onclick="switchTab('today', 'tarot')">🌟 오늘의 운세</button>
-                            <button id="tarot-btn-love" class="tab-btn tarot-tab-btn" onclick="switchTab('love', 'tarot')">💕 연애운</button>
-                            <button id="tarot-btn-wealth" class="tab-btn tarot-tab-btn" onclick="switchTab('wealth', 'tarot')">💰 금전운</button>
+                            <button id="tarot-btn-past" class="tab-btn tarot-tab-btn active" onclick="switchTab('past', 'tarot')">🕰️ 과거</button>
+                            <button id="tarot-btn-present" class="tab-btn tarot-tab-btn" onclick="switchTab('present', 'tarot')">✨ 현재</button>
+                            <button id="tarot-btn-future" class="tab-btn tarot-tab-btn" onclick="switchTab('future', 'tarot')">🚀 미래</button>
                         </div>
                         
-                        <div id="tarot-content-today" class="tab-content tarot-tab-content active">
-                            <div class="tab-quote">"${data.today?.quote || ''}"</div>
-                            <div class="tab-desc">${data.today?.desc || ''}</div>
+                        <div id="tarot-content-past" class="tab-content tarot-tab-content active">
+                            <div class="tab-quote">"${data.past?.quote || ''}"</div>
+                            <div class="tab-desc">${data.past?.desc || ''}</div>
                         </div>
-                        <div id="tarot-content-love" class="tab-content tarot-tab-content">
-                            <div class="tab-quote">"${data.love?.quote || ''}"</div>
-                            <div class="tab-desc">${data.love?.desc || ''}</div>
+                        <div id="tarot-content-present" class="tab-content tarot-tab-content">
+                            <div class="tab-quote">"${data.present?.quote || ''}"</div>
+                            <div class="tab-desc">${data.present?.desc || ''}</div>
                         </div>
-                        <div id="tarot-content-wealth" class="tab-content tarot-tab-content">
-                            <div class="tab-quote">"${data.wealth?.quote || ''}"</div>
-                            <div class="tab-desc">${data.wealth?.desc || ''}</div>
+                        <div id="tarot-content-future" class="tab-content tarot-tab-content">
+                            <div class="tab-quote">"${data.future?.quote || ''}"</div>
+                            <div class="tab-desc">${data.future?.desc || ''}</div>
                         </div>
                     </div>
                 `;
 
                 resultBox.innerHTML = `
-                    <h3 class="result-title">🌟 ${cardName}</h3>
+                    <h3 class="result-title">🌟 당신의 타로 리딩 결과</h3>
                     <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
-                        <img src="${cardImg}" alt="타로 카드" style="width: 30%; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); object-fit: cover;">
-                        ${data.imageUrl ? `<img src="${data.imageUrl}" alt="AI 맞춤 짤" style="width: 65%; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); object-fit: cover;">` : ''}
+                        ${data.imageUrl ? `<img src="${data.imageUrl}" alt="AI 맞춤 짤" style="width: 100%; max-width: 400px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); object-fit: cover;">` : ''}
                     </div>
                     ${tabsHtml}
                 `;
             } catch (error) {
                 console.error(error);
-                resultBox.innerHTML = `<p style="color: #ff6b6b; padding: 20px;">서버와 통신 중 오류가 발생했습니다. 서버가 실행 중인지 확인해주세요!</p>`;
+                resultBox.innerHTML = `<p style="color: #ff6b6b; padding: 20px;">서버와 통신 중 오류가 발생했습니다.</p>`;
             }
             
-            // Re-trigger animation
             resultBox.style.animation = 'none';
-            resultBox.offsetHeight; /* trigger reflow */
+            resultBox.offsetHeight; 
             resultBox.style.animation = 'fadeIn 1s ease';
         }
 
