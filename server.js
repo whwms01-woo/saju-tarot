@@ -37,8 +37,8 @@ app.post('/api/tarot', async (req, res) => {
         - 무념무상/존버: "https://media.giphy.com/media/QMHoU66sBXqqLqYvGO/giphy.gif"
         `;
         
-        const prompt = \`너는 MZ세대가 좋아하는 트렌디하고 유쾌한 타로 마스터야. 
-        사용자가 궁금해하는 주제는 '\${topic || '오늘의 운세'}'이고, 뽑은 카드는 '\${cardName}'이야.
+        const prompt = `너는 MZ세대가 좋아하는 트렌디하고 유쾌한 타로 마스터야. 
+        사용자가 궁금해하는 주제는 '${topic || '오늘의 운세'}'이고, 뽑은 카드는 '${cardName}'이야.
         이 카드의 상징적 의미(팩트)를 바탕으로, 상황을 '기-승-전-결' 4컷 만화 스토리텔링으로 재밌게 해석해 줘. 
         
         조건:
@@ -48,7 +48,7 @@ app.post('/api/tarot', async (req, res) => {
         4. 이모지(Emoji)를 적극적으로 사용할 것.
         5. 아래 제공된 밈(짤) URL 목록 중에서 각 단계와 가장 잘 어울리는 이미지 URL을 골라 'imageUrl' 필드에 넣어줘. 4단계 모두 다 다른 URL을 써도 좋음.
         [밈 URL 목록]
-        \${memeList}
+        ${memeList}
         
         반드시 아래 JSON 형식으로만 답변해:
         {
@@ -58,7 +58,7 @@ app.post('/api/tarot', async (req, res) => {
                 { "title": "전 (팩폭/반전)", "desc": "...", "imageUrl": "..." },
                 { "title": "결 (해결/조언)", "desc": "...", "imageUrl": "..." }
             ]
-        }\`;
+        }`;
 
         const result = await model.generateContent(prompt);
         const response = await result.response;
@@ -94,12 +94,12 @@ app.post('/api/saju', async (req, res) => {
         - 무념무상/존버: "https://media.giphy.com/media/QMHoU66sBXqqLqYvGO/giphy.gif"
         `;
 
-        const prompt = \`너는 팩트폭력을 날리면서도 유쾌하게 사주를 봐주는 MZ 도사야.
+        const prompt = `너는 팩트폭력을 날리면서도 유쾌하게 사주를 봐주는 MZ 도사야.
         사용자 정보:
-        - 이름: \${name || '익명'}
-        - 사는 지역(태어난 곳): \${region || '모름'}
-        - 생년월일: \${birthDate || '모름'}
-        - 태어난 시간: \${birthTime || '모름'}
+        - 이름: ${name || '익명'}
+        - 사는 지역(태어난 곳): ${region || '모름'}
+        - 생년월일: ${birthDate || '모름'}
+        - 태어난 시간: ${birthTime || '모름'}
         
         이 정보를 바탕으로 이 사람의 올해 사주(운세)를 '기-승-전-결' 4컷 만화 스토리텔링으로 재밌게 풀이해 줘.
         
@@ -110,7 +110,7 @@ app.post('/api/saju', async (req, res) => {
         4. 이모지(Emoji)를 적극적으로 사용할 것.
         5. 아래 제공된 밈(짤) URL 목록 중에서 각 단계와 가장 잘 어울리는 이미지 URL을 골라 'imageUrl' 필드에 넣어줘. 4단계 모두 다 다른 URL을 써도 좋음.
         [밈 URL 목록]
-        \${memeList}
+        ${memeList}
         
         반드시 아래 JSON 형식으로만 답변해:
         {
@@ -120,7 +120,7 @@ app.post('/api/saju', async (req, res) => {
                 { "title": "전 (위기/팩폭)", "desc": "...", "imageUrl": "..." },
                 { "title": "결 (대비책/조언)", "desc": "...", "imageUrl": "..." }
             ]
-        }\`;
+        }`;
 
         const result = await model.generateContent(prompt);
         const response = await result.response;
