@@ -20,8 +20,8 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // Robust Gemini Helper with Model Fallbacks and Safe JSON Extraction
 async function generateGeminiContent(prompt) {
-    const models = ["gemini-1.5-flash", "gemini-1.5-flash-latest", "gemini-pro"];
-    let lastError = null;
+    const models = ["gemini-1.5-flash", "gemini-1.5-flash-latest", "gemini-1.5-pro"];
+    const errors = [];
 
     for (const modelName of models) {
         try {
@@ -49,11 +49,11 @@ async function generateGeminiContent(prompt) {
             return jsonResult;
         } catch (err) {
             console.error(`[Gemini] Model ${modelName} failed:`, err.message);
-            lastError = err;
+            errors.push(`${modelName}: ${err.message}`);
         }
     }
     
-    throw lastError || new Error("모든 AI 모델 호출에 실패했습니다.");
+    throw new Error(`모든 AI 모델 호출 실패:\n- ${errors.join('\n- ')}`);
 }
 
 // Tarot API Endpoint
