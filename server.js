@@ -23,7 +23,10 @@ app.post('/api/tarot', async (req, res) => {
     try {
         const { cards } = req.body;
         
-        const model = genAI.getGenerativeModel({ model: "gemini-3.1-flash-lite" });
+        const model = genAI.getGenerativeModel({ 
+            model: "gemini-1.5-flash",
+            generationConfig: { responseMimeType: "application/json" }
+        });
         
         const prompt = `너는 MZ세대가 좋아하는 트렌디하고 유쾌한 타로 마스터야. 
         사용자가 과거, 현재, 미래를 알아보기 위해 총 3장의 카드를 뽑았어.
@@ -65,7 +68,10 @@ app.post('/api/saju', async (req, res) => {
     try {
         const { name, region, birthDate, birthTime } = req.body;
         
-        const model = genAI.getGenerativeModel({ model: "gemini-3.1-flash-lite" });
+        const model = genAI.getGenerativeModel({ 
+            model: "gemini-1.5-flash",
+            generationConfig: { responseMimeType: "application/json" }
+        });
         
         const prompt = `너는 팩트폭력을 날리면서도 유쾌하게 사주를 봐주는 MZ 도사야.
         사용자 정보:
