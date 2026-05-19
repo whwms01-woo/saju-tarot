@@ -20,7 +20,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // Robust Gemini Helper with Model Fallbacks and Safe JSON Extraction
 async function generateGeminiContent(prompt) {
-    const models = ["gemini-1.5-flash", "gemini-1.5-flash-latest", "gemini-1.5-pro"];
+    const models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-flash-latest"];
     const errors = [];
 
     for (const modelName of models) {
