@@ -523,9 +523,21 @@
         function selectCard(cardEl, card) {
             if (selectedCards.length >= 3 || cardEl.classList.contains('selected')) return;
             
+            // 클릭하자마자 바로 뒤집고 이미지 렌더링
             cardEl.classList.add('selected');
-            cardEl.innerText = card.name.split(' ')[0]; // Show number temporarily
+            cardEl.classList.add('face-up');
             selectedCards.push(card);
+
+            cardEl.style.backgroundImage = `url('${card.img}')`;
+            cardEl.style.backgroundSize = 'cover';
+            cardEl.style.backgroundPosition = 'center';
+            cardEl.style.border = '2px solid #f1c40f';
+            cardEl.style.position = 'relative';
+            cardEl.style.overflow = 'hidden';
+            
+            // 카드 하단에 이름 표시
+            const koreanName = card.name.split('(')[1].replace(')','');
+            cardEl.innerHTML = `<div style="background:rgba(0,0,0,0.7); color:#fff; width:100%; position:absolute; bottom:0; left:0; font-size:0.65rem; padding:3px 0; font-weight:bold;">${koreanName}</div>`;
 
             const instruction = document.getElementById('tarot-instruction');
             if (selectedCards.length === 1) instruction.innerText = "현재 상황을 나타낼 두 번째 카드를 뽑아주세요.";
@@ -533,24 +545,6 @@
             if (selectedCards.length === 3) {
                 instruction.innerText = "우주의 기운을 읽는 중...";
                 setTimeout(() => {
-                    document.querySelectorAll('.tarot-card.selected').forEach(el => {
-                        el.classList.add('face-up');
-                        
-                        // 현재 el.innerText에 적힌 번호로 원래 카드 객체를 찾습니다.
-                        const tempText = el.innerText;
-                        const cObj = selectedCards.find(c => c.name.split(' ')[0] === tempText);
-                        
-                        el.style.backgroundImage = `url('${cObj.img}')`;
-                        el.style.backgroundSize = 'cover';
-                        el.style.backgroundPosition = 'center';
-                        el.style.border = '2px solid #f1c40f';
-                        el.style.position = 'relative';
-                        el.style.overflow = 'hidden';
-                        
-                        // 카드 하단에 이름 표시
-                        const koreanName = cObj.name.split('(')[1].replace(')','');
-                        el.innerHTML = `<div style="background:rgba(0,0,0,0.7); color:#fff; width:100%; position:absolute; bottom:0; left:0; font-size:0.65rem; padding:3px 0; font-weight:bold;">${koreanName}</div>`;
-                    });
                     drawTarotReading();
                 }, 500);
             }
