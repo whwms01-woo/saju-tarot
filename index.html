@@ -653,7 +653,10 @@
                     body: JSON.stringify({ cards: selectedCards.map(c => c.name) })
                 });
                 
-                if (!response.ok) throw new Error('Network response was not ok');
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.error || `서버 에러 (${response.status})`);
+                }
                 const data = await response.json();
                 
                 let tabsHtml = `
@@ -685,7 +688,7 @@
                 `;
             } catch (error) {
                 console.error(error);
-                resultBox.innerHTML = `<p style="color: #ff6b6b; padding: 20px;">서버와 통신 중 오류가 발생했습니다.</p>`;
+                resultBox.innerHTML = `<p style="color: #ff6b6b; padding: 20px; font-weight: bold;">오류가 발생했습니다:<br><span style="font-size:0.9rem; font-weight:normal; color:#ff8a8a;">${error.message}</span></p>`;
             }
             
             resultBox.style.animation = 'none';
@@ -732,7 +735,10 @@
                     body: JSON.stringify({ name, region, birthDate, birthTime })
                 });
                 
-                if (!response.ok) throw new Error('Network response was not ok');
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.error || `서버 에러 (${response.status})`);
+                }
                 const data = await response.json();
                 
                 // Render the real AI result
@@ -765,7 +771,7 @@
                 `;
             } catch (error) {
                 console.error(error);
-                resultBox.innerHTML = `<p style="color: #ff6b6b; padding: 20px;">서버와 통신 중 오류가 발생했습니다. 서버가 실행 중인지 확인해주세요!</p>`;
+                resultBox.innerHTML = `<p style="color: #ff6b6b; padding: 20px; font-weight: bold;">오류가 발생했습니다:<br><span style="font-size:0.9rem; font-weight:normal; color:#ff8a8a;">${error.message}</span></p>`;
             }
 
             btn.innerText = originalText;

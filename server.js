@@ -18,15 +18,48 @@ app.use(express.static('./'));
 // Initialize Gemini API
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
+// Robust Gemini Helper with Model Fallbacks and Safe JSON Extraction
+async function generateGeminiContent(prompt) {
+    const models = ["gemini-1.5-flash", "gemini-1.5-flash-latest", "gemini-pro"];
+    let lastError = null;
+
+    for (const modelName of models) {
+        try {
+            console.log(`[Gemini] Attempting generation with model: ${modelName}...`);
+            const model = genAI.getGenerativeModel({ 
+                model: modelName,
+                generationConfig: { responseMimeType: "application/json" }
+            });
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            let text = response.text();
+            
+            // Clean up markdown block if present
+            text = text.replace(/```json/gi, '').replace(/```/g, '').trim();
+            
+            // Extract strictly from { to }
+            const startIndex = text.indexOf('{');
+            const endIndex = text.lastIndexOf('}');
+            if (startIndex !== -1 && endIndex !== -1) {
+                text = text.substring(startIndex, endIndex + 1);
+            }
+            
+            const jsonResult = JSON.parse(text);
+            console.log(`[Gemini] Successfully generated and parsed content using model: ${modelName}!`);
+            return jsonResult;
+        } catch (err) {
+            console.error(`[Gemini] Model ${modelName} failed:`, err.message);
+            lastError = err;
+        }
+    }
+    
+    throw lastError || new Error("모든 AI 모델 호출에 실패했습니다.");
+}
+
 // Tarot API Endpoint
 app.post('/api/tarot', async (req, res) => {
     try {
         const { cards } = req.body;
-        
-        const model = genAI.getGenerativeModel({ 
-            model: "gemini-1.5-flash",
-            generationConfig: { responseMimeType: "application/json" }
-        });
         
         const prompt = `너는 MZ세대가 좋아하는 트렌디하고 유쾌한 타로 마스터야. 
         사용자가 과거, 현재, 미래를 알아보기 위해 총 3장의 카드를 뽑았어.
@@ -48,18 +81,11 @@ app.post('/api/tarot', async (req, res) => {
             "future": { "quote": "미래 핵심", "desc": "상세 풀이" }
         }`;
 
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        let text = response.text();
-        
-        // Clean up markdown block if present
-        text = text.replace(/```json/gi, '').replace(/```/g, '').trim();
-        const jsonResult = JSON.parse(text);
-
+        const jsonResult = await generateGeminiContent(prompt);
         res.json(jsonResult);
     } catch (error) {
         console.error('Tarot API Error:', error);
-        res.status(500).json({ error: "운세 분석 중 오류가 발생했습니다." });
+        res.status(500).json({ error: `타로 분석 에러: ${error.message}` });
     }
 });
 
@@ -67,11 +93,6 @@ app.post('/api/tarot', async (req, res) => {
 app.post('/api/saju', async (req, res) => {
     try {
         const { name, region, birthDate, birthTime } = req.body;
-        
-        const model = genAI.getGenerativeModel({ 
-            model: "gemini-1.5-flash",
-            generationConfig: { responseMimeType: "application/json" }
-        });
         
         const prompt = `너는 팩트폭력을 날리면서도 유쾌하게 사주를 봐주는 MZ 도사야.
         사용자 정보:
@@ -94,18 +115,11 @@ app.post('/api/saju', async (req, res) => {
             "wealth": { "quote": "금전운 핵심", "desc": "상세 풀이" }
         }`;
 
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        let text = response.text();
-        
-        // Clean up markdown block if present
-        text = text.replace(/```json/gi, '').replace(/```/g, '').trim();
-        const jsonResult = JSON.parse(text);
-
+        const jsonResult = await generateGeminiContent(prompt);
         res.json(jsonResult);
     } catch (error) {
         console.error('Saju API Error:', error);
-        res.status(500).json({ error: "사주 분석 중 오류가 발생했습니다." });
+        res.status(500).json({ error: `사주 분석 에러: ${error.message}` });
     }
 });
 
