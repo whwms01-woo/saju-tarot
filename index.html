@@ -644,7 +644,10 @@
             resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             
             try {
-                const response = await fetch('/api/tarot', {
+                const apiBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
+                    ? 'http://localhost:3000'
+                    : 'https://saju-tarot.onrender.com';
+                const response = await fetch(`${apiBase}/api/tarot`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ cards: selectedCards.map(c => c.name) })
@@ -720,8 +723,10 @@
             resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
             try {
-                // Call the backend API
-                const response = await fetch('/api/saju', {
+                const apiBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
+                    ? 'http://localhost:3000'
+                    : 'https://saju-tarot.onrender.com';
+                const response = await fetch(`${apiBase}/api/saju`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, region, birthDate, birthTime })
