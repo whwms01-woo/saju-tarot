@@ -126,3 +126,29 @@ app.post('/api/saju', async (req, res) => {
 app.listen(port, () => {
     console.log(`서버가 성공적으로 켜졌습니다! http://localhost:${port} 로 접속하세요.`);
 });
+
+// Startup Diagnostic Logs to debug API key and model availability
+(async () => {
+    console.log("=== STARTUP DIAGNOSTICS ===");
+    const apiKey = process.env.GEMINI_API_KEY;
+    console.log("GEMINI_API_KEY status:", apiKey ? `LOADED (Length: ${apiKey.length})` : "NOT LOADED");
+    if (apiKey) {
+        console.log("GEMINI_API_KEY preview:", `${apiKey.substring(0, 5)}...${apiKey.slice(-5)}`);
+        try {
+            console.log("[Diagnostic] Fetching available models from Google API...");
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+            const data = await response.json();
+            if (data.models) {
+                console.log("[Diagnostic] Successfully fetched models! Available models:");
+                data.models.forEach(m => console.log(`  - ${m.name}`));
+            } else if (data.error) {
+                console.log("[Diagnostic] Google API returned an error:", data.error.message);
+            } else {
+                console.log("[Diagnostic] Unknown response structure:", data);
+            }
+        } catch (err) {
+            console.error("[Diagnostic] Failed to fetch models:", err.message);
+        }
+    }
+    console.log("===========================");
+})();
