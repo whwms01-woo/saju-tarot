@@ -672,9 +672,6 @@
 
                 resultBox.innerHTML = `
                     <h3 class="result-title">🌟 당신의 타로 리딩 결과</h3>
-                    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
-                        ${data.imageUrl ? `<img src="${data.imageUrl}" alt="AI 맞춤 짤" style="width: 100%; max-width: 400px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); object-fit: cover;">` : ''}
-                    </div>
                     ${tabsHtml}
                 `;
             } catch (error) {
@@ -753,7 +750,6 @@
 
                 resultBox.innerHTML = `
                     <h3 class="result-title">🌙 당신의 맞춤 사주 풀이</h3>
-                    ${data.imageUrl ? `<img src="${data.imageUrl}" alt="AI 맞춤 짤" style="width: 100%; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">` : ''}
                     ${tabsHtml}
                 `;
             } catch (error) {
