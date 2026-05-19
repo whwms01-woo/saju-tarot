@@ -123,6 +123,31 @@ app.post('/api/saju', async (req, res) => {
     }
 });
 
+// Diagnosis endpoint accessible via browser
+app.get('/api/diag', async (req, res) => {
+    const apiKey = process.env.GEMINI_API_KEY;
+    const diag = {
+        apiKeyStatus: apiKey ? `LOADED (Length: ${apiKey.length})` : "NOT LOADED",
+        apiKeyPreview: apiKey ? `${apiKey.substring(0, 5)}...${apiKey.slice(-5)}` : "NONE",
+        models: [],
+        error: null
+    };
+    try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+        const data = await response.json();
+        if (data.models) {
+            diag.models = data.models.map(m => m.name);
+        } else if (data.error) {
+            diag.error = data.error.message;
+        } else {
+            diag.error = JSON.stringify(data);
+        }
+    } catch (err) {
+        diag.error = err.message;
+    }
+    res.json(diag);
+});
+
 app.listen(port, () => {
     console.log(`서버가 성공적으로 켜졌습니다! http://localhost:${port} 로 접속하세요.`);
 });
