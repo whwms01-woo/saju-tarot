@@ -18,43 +18,68 @@ app.use(express.static('./'));
 // Initialize Gemini API
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// Robust Gemini Helper with Model Fallbacks and Safe JSON Extraction
+// Helper to pause execution
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Robust Gemini Helper with Model Fallbacks, Safe JSON Extraction, and Automatic Rate Limit Retries
 async function generateGeminiContent(prompt) {
     const models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-flash-latest"];
     const errors = [];
 
     for (const modelName of models) {
-        try {
-            console.log(`[Gemini] Attempting generation with model: ${modelName}...`);
-            const model = genAI.getGenerativeModel({ 
-                model: modelName,
-                generationConfig: { responseMimeType: "application/json" }
-            });
-            const result = await model.generateContent(prompt);
-            const response = await result.response;
-            let text = response.text();
-            
-            // Clean up markdown block if present
-            text = text.replace(/```json/gi, '').replace(/```/g, '').trim();
-            
-            // Extract strictly from { to }
-            const startIndex = text.indexOf('{');
-            const endIndex = text.lastIndexOf('}');
-            if (startIndex !== -1 && endIndex !== -1) {
-                text = text.substring(startIndex, endIndex + 1);
+        let attempts = 0;
+        const maxAttempts = 3;
+        
+        while (attempts < maxAttempts) {
+            attempts++;
+            try {
+                console.log(`[Gemini] Attempting generation with model: ${modelName} (Attempt ${attempts}/${maxAttempts})...`);
+                const model = genAI.getGenerativeModel({ 
+                    model: modelName,
+                    generationConfig: { responseMimeType: "application/json" }
+                });
+                const result = await model.generateContent(prompt);
+                const response = await result.response;
+                let text = response.text();
+                
+                // Clean up markdown block if present
+                text = text.replace(/```json/gi, '').replace(/```/g, '').trim();
+                
+                // Extract strictly from { to }
+                const startIndex = text.indexOf('{');
+                const endIndex = text.lastIndexOf('}');
+                if (startIndex !== -1 && endIndex !== -1) {
+                    text = text.substring(startIndex, endIndex + 1);
+                }
+                
+                const jsonResult = JSON.parse(text);
+                console.log(`[Gemini] Successfully generated and parsed content using model: ${modelName}!`);
+                return jsonResult;
+            } catch (err) {
+                const errMessage = err.message || '';
+                const isRateLimit = errMessage.includes('429') || 
+                                    errMessage.toLowerCase().includes('quota') || 
+                                    errMessage.toLowerCase().includes('rate limit') || 
+                                    errMessage.toLowerCase().includes('too many requests');
+                
+                console.error(`[Gemini] Model ${modelName} failed on attempt ${attempts}:`, errMessage);
+                
+                if (isRateLimit && attempts < maxAttempts) {
+                    const delay = attempts === 1 ? 3000 : 5000;
+                    console.log(`[Gemini] Rate limit hit. Sleeping for ${delay}ms before retrying ${modelName}...`);
+                    await sleep(delay);
+                } else {
+                    // Record error and move to next model if we ran out of attempts or it's a non-rate-limit error
+                    errors.push(`${modelName} (Attempt ${attempts}/${maxAttempts}): ${errMessage}`);
+                    break;
+                }
             }
-            
-            const jsonResult = JSON.parse(text);
-            console.log(`[Gemini] Successfully generated and parsed content using model: ${modelName}!`);
-            return jsonResult;
-        } catch (err) {
-            console.error(`[Gemini] Model ${modelName} failed:`, err.message);
-            errors.push(`${modelName}: ${err.message}`);
         }
     }
     
     throw new Error(`모든 AI 모델 호출 실패:\n- ${errors.join('\n- ')}`);
 }
+
 
 // Tarot API Endpoint
 app.post('/api/tarot', async (req, res) => {

@@ -688,7 +688,39 @@
                 `;
             } catch (error) {
                 console.error(error);
-                resultBox.innerHTML = `<p style="color: #ff6b6b; padding: 20px; font-weight: bold;">오류가 발생했습니다:<br><span style="font-size:0.9rem; font-weight:normal; color:#ff8a8a;">${error.message}</span></p>`;
+                const isRateLimit = error.message.includes('429') || error.message.toLowerCase().includes('quota') || error.message.toLowerCase().includes('too many requests') || error.message.toLowerCase().includes('rate limit');
+                
+                if (isRateLimit) {
+                    resultBox.innerHTML = `
+                        <div style="padding: 25px 20px; border-radius: 15px; border: 1px solid rgba(242, 153, 74, 0.3); background: rgba(242, 153, 74, 0.05); text-align: center;">
+                            <span style="font-size: 2.5rem; display: block; margin-bottom: 12px; animation: twinkle 1s infinite alternate;">🌌</span>
+                            <h4 style="color: #f2994a; font-size: 1.1rem; margin-bottom: 10px; font-weight: bold;">우주의 기운이 잠시 붐비고 있습니다!</h4>
+                            <p style="font-size: 0.9rem; color: #b0a8b9; line-height: 1.6; word-break: keep-all; margin-bottom: 15px;">
+                                현재 많은 분들이 동시에 운명의 기운을 모으고 있어 AI 온도가 살짝 뜨거워졌습니다. 🔥<br>
+                                <strong>약 5~10초 후</strong>에 다시 한번 카드를 뽑아주시면 즉시 우주의 메시지를 읽어드릴게요!
+                            </p>
+                            <details style="margin-top: 15px; text-align: left;">
+                                <summary style="font-size: 0.75rem; color: #ff6b6b; cursor: pointer; user-select: none; opacity: 0.6;">시스템 상세 에러 보기</summary>
+                                <pre style="font-size: 0.75rem; color: #ff8a8a; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; margin-top: 8px; white-space: pre-wrap; word-break: break-all; font-family: monospace; border: 1px solid rgba(255,255,255,0.05);">${error.message}</pre>
+                            </details>
+                        </div>
+                    `;
+                } else {
+                    resultBox.innerHTML = `
+                        <div style="padding: 25px 20px; border-radius: 15px; border: 1px solid rgba(255, 107, 107, 0.3); background: rgba(255, 107, 107, 0.05); text-align: center;">
+                            <span style="font-size: 2.5rem; display: block; margin-bottom: 12px;">⚠️</span>
+                            <h4 style="color: #ff6b6b; font-size: 1.1rem; margin-bottom: 10px; font-weight: bold;">운세 분석 중 문제가 발생했습니다</h4>
+                            <p style="font-size: 0.9rem; color: #b0a8b9; line-height: 1.6; word-break: keep-all; margin-bottom: 15px;">
+                                우주의 주파수를 맞추는 도중 예기치 못한 혼선이 생겼습니다.<br>
+                                잠시 후 다시 시도해 주시기 바랍니다.
+                            </p>
+                            <details style="margin-top: 15px; text-align: left;">
+                                <summary style="font-size: 0.75rem; color: #ff6b6b; cursor: pointer; user-select: none; opacity: 0.6;">시스템 상세 에러 보기</summary>
+                                <pre style="font-size: 0.75rem; color: #ff8a8a; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; margin-top: 8px; white-space: pre-wrap; word-break: break-all; font-family: monospace; border: 1px solid rgba(255,255,255,0.05);">${error.message}</pre>
+                            </details>
+                        </div>
+                    `;
+                }
             }
             
             resultBox.style.animation = 'none';
@@ -771,7 +803,39 @@
                 `;
             } catch (error) {
                 console.error(error);
-                resultBox.innerHTML = `<p style="color: #ff6b6b; padding: 20px; font-weight: bold;">오류가 발생했습니다:<br><span style="font-size:0.9rem; font-weight:normal; color:#ff8a8a;">${error.message}</span></p>`;
+                const isRateLimit = error.message.includes('429') || error.message.toLowerCase().includes('quota') || error.message.toLowerCase().includes('too many requests') || error.message.toLowerCase().includes('rate limit');
+                
+                if (isRateLimit) {
+                    resultBox.innerHTML = `
+                        <div style="padding: 25px 20px; border-radius: 15px; border: 1px solid rgba(242, 153, 74, 0.3); background: rgba(242, 153, 74, 0.05); text-align: center;">
+                            <span style="font-size: 2.5rem; display: block; margin-bottom: 12px; animation: twinkle 1s infinite alternate;">🌌</span>
+                            <h4 style="color: #f2994a; font-size: 1.1rem; margin-bottom: 10px; font-weight: bold;">우주의 기운이 잠시 붐비고 있습니다!</h4>
+                            <p style="font-size: 0.9rem; color: #b0a8b9; line-height: 1.6; word-break: keep-all; margin-bottom: 15px;">
+                                현재 많은 분들이 동시에 운명의 기운을 모으고 있어 AI 온도가 살짝 뜨거워졌습니다. 🔥<br>
+                                <strong>약 5~10초 후</strong>에 다시 한번 시작 버튼을 눌러주시면 즉시 우주의 메시지를 읽어드릴게요!
+                            </p>
+                            <details style="margin-top: 15px; text-align: left;">
+                                <summary style="font-size: 0.75rem; color: #ff6b6b; cursor: pointer; user-select: none; opacity: 0.6;">시스템 상세 에러 보기</summary>
+                                <pre style="font-size: 0.75rem; color: #ff8a8a; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; margin-top: 8px; white-space: pre-wrap; word-break: break-all; font-family: monospace; border: 1px solid rgba(255,255,255,0.05);">${error.message}</pre>
+                            </details>
+                        </div>
+                    `;
+                } else {
+                    resultBox.innerHTML = `
+                        <div style="padding: 25px 20px; border-radius: 15px; border: 1px solid rgba(255, 107, 107, 0.3); background: rgba(255, 107, 107, 0.05); text-align: center;">
+                            <span style="font-size: 2.5rem; display: block; margin-bottom: 12px;">⚠️</span>
+                            <h4 style="color: #ff6b6b; font-size: 1.1rem; margin-bottom: 10px; font-weight: bold;">운세 분석 중 문제가 발생했습니다</h4>
+                            <p style="font-size: 0.9rem; color: #b0a8b9; line-height: 1.6; word-break: keep-all; margin-bottom: 15px;">
+                                우주의 주파수를 맞추는 도중 예기치 못한 혼선이 생겼습니다.<br>
+                                잠시 후 다시 시도해 주시기 바랍니다.
+                            </p>
+                            <details style="margin-top: 15px; text-align: left;">
+                                <summary style="font-size: 0.75rem; color: #ff6b6b; cursor: pointer; user-select: none; opacity: 0.6;">시스템 상세 에러 보기</summary>
+                                <pre style="font-size: 0.75rem; color: #ff8a8a; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; margin-top: 8px; white-space: pre-wrap; word-break: break-all; font-family: monospace; border: 1px solid rgba(255,255,255,0.05);">${error.message}</pre>
+                            </details>
+                        </div>
+                    `;
+                }
             }
 
             btn.innerText = originalText;
