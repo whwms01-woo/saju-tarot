@@ -23,6 +23,11 @@
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
         }
 
+        html {
+            background-color: #060913; /* 모바일 기기 오버스크롤 바운스 시 흰색이 보이는 현상 완벽 방지 */
+            overscroll-behavior-y: none; /* 모바일 브라우저 바운스 현상 자체를 비활성화 */
+        }
+
         body {
             background: linear-gradient(180deg, #0b0f19 0%, #060913 100%);
             color: var(--text-main);
@@ -1157,6 +1162,15 @@
             });
         }
 
+        // PC KakaoPay Click Handler
+        function handleKakaoPayClick(event) {
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            if (!isMobile) {
+                event.preventDefault();
+                alert('💡 카카오페이 송금은 모바일 기기(스마트폰)의 카카오톡 앱에서만 작동합니다!\n\n스마트폰으로 사이트(https://saju-tarot.onrender.com)에 접속하시면 카카오페이로 즉시 복채 송금이 가능합니다. 😊\n\n(스마트폰으로 접속하시거나, PC 화면에서 QR 코드를 모바일로 직접 촬영해 송금해 주세요!)');
+            }
+        }
+
         // Amulet HTML Generator Helper (Stage 3)
         function generateAmuletHtml(id, name, amuletData) {
             if(!amuletData) return '';
@@ -1188,7 +1202,7 @@
                 <!-- ☕ 복채 후원하기 (카카오페이 송금링크 연동) -->
                 <div class="support-box">
                     <p class="support-title">🔮 도사님 팩폭 분석에 감동하셨다면?<br>따뜻한 복채(커피값) 후원하기 ☕</p>
-                    <a href="https://qr.kakaopay.com/Ej8iWdjzG" target="_blank" class="support-btn">
+                    <a href="https://qr.kakaopay.com/Ej8iWdjzG" target="_blank" class="support-btn" onclick="handleKakaoPayClick(event)">
                         💛 카카오페이로 복채 보내기
                     </a>
                 </div>
