@@ -689,6 +689,47 @@
             padding: 8px 2px !important;
             font-size: 0.88rem !important;
         }
+
+        /* ☕ 복채 후원 박스 스타일 */
+        .support-box {
+            background: rgba(242, 153, 74, 0.05);
+            border: 1px dashed rgba(242, 153, 74, 0.3);
+            border-radius: 16px;
+            padding: 20px 15px;
+            margin-top: 30px;
+            text-align: center;
+            width: 100%;
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 4px 15px rgba(242, 153, 74, 0.05);
+        }
+        .support-title {
+            color: #f2994a;
+            font-size: 0.88rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            word-break: keep-all;
+            line-height: 1.4;
+        }
+        .support-btn {
+            display: inline-block;
+            background: #ffeb00;
+            color: #3c1e1e;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 800;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(255, 235, 0, 0.2);
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .support-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 235, 0, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -882,6 +923,7 @@
 
     </div>
 
+
     <script>
         // 생년월일 드롭다운 초기화
         window.onload = function() {
@@ -924,6 +966,7 @@
             document.getElementById(`${prefix}-btn-${tabId}`).classList.add('active');
             document.getElementById(`${prefix}-content-${tabId}`).classList.add('active');
         }
+
 
         function showSection(sectionId) {
             // Hide all sections
@@ -1104,6 +1147,7 @@
         // Amulet HTML Generator Helper (Stage 3)
         function generateAmuletHtml(id, name, amuletData) {
             if(!amuletData) return '';
+            
             const keyword = amuletData.keyword || "행운 장착";
             const desc = amuletData.desc || "우주가 당신의 성공을 보증합니다.";
             const icon = amuletData.icon || "🔮";
@@ -1126,6 +1170,14 @@
                             📢 공유하기
                         </button>
                     </div>
+                </div>
+
+                <!-- ☕ 복채 후원하기 (카카오페이 송금링크 연동) -->
+                <div class="support-box">
+                    <p class="support-title">🔮 도사님 팩폭 분석에 감동하셨다면?<br>따뜻한 복채(커피값) 후원하기 ☕</p>
+                    <a href="https://qr.kakaopay.com/Ej8iWdjzG" target="_blank" class="support-btn">
+                        💛 카카오페이로 복채 보내기
+                    </a>
                 </div>
             `;
         }
