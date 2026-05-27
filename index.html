@@ -1030,7 +1030,9 @@
             const shareUrl = window.location.href;
             const fullText = `${text}\n${shareUrl}`;
             
-            if (navigator.share) {
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            
+            if (isMobile && navigator.share) {
                 navigator.share({
                     title: title,
                     text: fullText,
