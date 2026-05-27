@@ -404,16 +404,247 @@
             word-break: keep-all;
             color: #fff;
         }
-        .watermark {
-            position: fixed;
-            bottom: 15px;
-            right: 20px;
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.3);
-            z-index: 1000;
+
+        /* 2단계: 결과 탭 대형 카드 스타일 및 애니메이션 */
+        .large-card-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .large-card-img {
+            width: 140px;
+            height: 230px;
+            border-radius: 12px;
+            border: 3px solid #f1c40f;
+            box-shadow: 0 0 25px rgba(241, 196, 15, 0.45), 0 0 10px rgba(155, 81, 224, 0.3);
+            object-fit: cover;
+            animation: cardSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            background-color: #1a1025;
+        }
+        @keyframes cardSlideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 3단계: 신비로운 행운의 부적 카드 디자인 */
+        .amulet-section {
+            width: 100%;
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .amulet-card {
+            background: linear-gradient(135deg, #16002c 0%, #3a0066 50%, #0d001a 100%);
+            border: 2px solid #f1c40f;
+            border-radius: 20px;
+            padding: 25px 20px;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 35px rgba(241, 196, 15, 0.35), inset 0 0 25px rgba(255, 255, 255, 0.05);
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        .amulet-card::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
             pointer-events: none;
-            letter-spacing: 1px;
-            font-weight: 300;
+        }
+        .amulet-title {
+            font-size: 0.8rem;
+            color: #b892ff;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+        .amulet-name {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+        }
+        .amulet-icon {
+            font-size: 4rem;
+            margin: 15px 0;
+            display: inline-block;
+            filter: drop-shadow(0 0 10px rgba(241, 196, 15, 0.6));
+            animation: float 3s ease-in-out infinite;
+        }
+        .amulet-keyword {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #f1c40f;
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px rgba(241, 196, 15, 0.5);
+        }
+        .amulet-desc {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #e0d0f0;
+            word-break: keep-all;
+            padding: 0 10px;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* 공유 및 행동 버튼들 */
+        .action-btn-group {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            max-width: 320px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-save {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+        }
+        .btn-share {
+            background: linear-gradient(135deg, #f2994a, #f2c94c);
+            color: #1a1025;
+        }
+
+        /* 4단계: 연인 궁합 선택 메뉴 디자인 */
+        .compatibility-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            animation: fadeInDown 1s ease 0.2s backwards;
+        }
+        .compatibility-card {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(242, 153, 74, 0.3);
+            box-shadow: 0 6px 24px rgba(242, 153, 74, 0.12), inset 0 0 15px rgba(255, 255, 255, 0.02);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .compatibility-card:hover {
+            border-color: rgba(242, 153, 74, 0.7);
+            box-shadow: 0 10px 30px rgba(242, 153, 74, 0.35), 0 0 15px rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+        .compatibility-card .card-title {
+            color: #f2994a;
+        }
+
+        /* 커플 정보 입력 양방향 그리드 */
+        .couple-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        @media (min-width: 440px) {
+            .couple-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+        }
+        .couple-form-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 15px;
+        }
+        .couple-form-card.partner {
+            border-color: rgba(242, 153, 74, 0.2);
+            background: rgba(242, 153, 74, 0.01);
+        }
+        .couple-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #b892ff;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 5px;
+        }
+        .couple-title.partner {
+            color: #f2994a;
+        }
+
+        /* 가로 스크롤 및 모바일 리사이징 방지 가독성 */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.1rem;
+            }
+            .container {
+                padding: 25px 12px;
+            }
+            .menu-grid {
+                gap: 12px;
+            }
+            .glass-card {
+                padding: 25px 12px;
+            }
+            .tab-btn {
+                font-size: 0.8rem;
+                padding: 8px 5px;
+            }
+            .tab-content {
+                padding: 15px 10px;
+            }
+            .large-card-img {
+                width: 120px;
+                height: 197px;
+            }
+        }
+
+        /* Toast Alert 메시지 */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(15, 12, 41, 0.95);
+            border: 1px solid #9b51e0;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 25px rgba(155, 81, 224, 0.4);
+            text-align: center;
+            white-space: nowrap;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
     </style>
 </head>
@@ -440,7 +671,19 @@
                     <span class="card-title">사주 팔자</span>
                 </div>
             </div>
-            <p style="color: var(--text-muted); text-align: center; font-size: 0.85rem; margin-top: 20px;">
+            
+            <!-- 4단계: 연인 궁합 선택 탭 추가 (가운데 정렬) -->
+            <div class="compatibility-container">
+                <div class="glass-card compatibility-card" onclick="showSection('chemistry-section')">
+                    <span class="card-icon" style="font-size: 2.8rem; margin-bottom: 10px; display: block;">💞</span>
+                    <span class="card-title">AI 연인 궁합 (우주 케미)</span>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 6px; font-weight: normal; line-height: 1.4;">
+                        너와 나의 우주적 궁합 분석!<br>찰떡인지 아님 파국인지 팩트폭행 드감 💥
+                    </p>
+                </div>
+            </div>
+            
+            <p style="color: var(--text-muted); text-align: center; font-size: 0.85rem; margin-top: 25px;">
                 우주의 기운을 모아 당신의 길을 비춰드립니다.
             </p>
         </div>
@@ -503,14 +746,94 @@
             </div>
 
             <div id="saju-result" class="result-box">
-                <h3 class="result-title">🌙 당신의 킹받는 사주 요약</h3>
-                <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNG15YWFtcTdyZ3MwZHVyemc5YXM5bTFteWNxZHpobW8xeXV6NThlZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L0qTl8hl84EDly62J1/giphy.webp" alt="MZ감성 짤" style="width: 100%; border-radius: 10px; margin-bottom: 15px;">
-                <p style="line-height: 1.6; font-size: 1.05rem; font-weight: bold;">
-                    "인생은 멘탈 싸움! 당신은 강철 멘탈의 소유자 🛡️"<br>
-                    <span style="font-weight: normal; font-size: 0.9rem; color: var(--text-muted);">올해는 숨만 쉬어도 돈 들어오는 해임. 존버 승리각 보이니까 하던 거 계속 하셈. 통장 잔고 보고 웃을 일 많을 듯 💸</span>
-                </p>
+                <!-- 결과 렌더링 영역 -->
             </div>
 
+            <button class="btn back-btn" onclick="showSection('main-menu')">처음으로 돌아가기</button>
+        </div>
+
+        <!-- Chemistry Section (4단계) -->
+        <div id="chemistry-section" class="view-section">
+            <h2 style="margin-bottom: 20px;">AI 연인 궁합 (우주 케미)</h2>
+            
+            <div class="glass-card" style="width: 100%; padding: 20px;">
+                <div class="couple-grid">
+                    <!-- 나의 정보 -->
+                    <div class="couple-form-card">
+                        <div class="couple-title">👤 나의 정보</div>
+                        <div class="form-group" style="margin-bottom: 12px;">
+                            <label>이름</label>
+                            <input type="text" id="chem-my-name" class="form-control" placeholder="홍길동" style="padding: 10px;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>생년월일 / 태어난 시간</label>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <div style="display: flex; gap: 5px;">
+                                    <select id="chem-my-year" class="form-control" style="padding: 10px; font-size: 0.85rem;"></select>
+                                    <select id="chem-my-month" class="form-control" style="padding: 10px; font-size: 0.85rem;"></select>
+                                    <select id="chem-my-day" class="form-control" style="padding: 10px; font-size: 0.85rem;"></select>
+                                </div>
+                                <select id="chem-my-time" class="form-control" style="padding: 10px; font-size: 0.85rem;">
+                                    <option>태어난 시간 모름</option>
+                                    <option>자시 (23:30 ~ 01:29)</option>
+                                    <option>축시 (01:30 ~ 03:29)</option>
+                                    <option>인시 (03:30 ~ 05:29)</option>
+                                    <option>묘시 (05:30 ~ 07:29)</option>
+                                    <option>진시 (07:30 ~ 09:29)</option>
+                                    <option>사시 (09:30 ~ 11:29)</option>
+                                    <option>오시 (11:30 ~ 13:29)</option>
+                                    <option>미시 (13:30 ~ 15:29)</option>
+                                    <option>신시 (15:30 ~ 17:29)</option>
+                                    <option>유시 (17:30 ~ 19:29)</option>
+                                    <option>술시 (19:30 ~ 21:29)</option>
+                                    <option>해시 (21:30 ~ 23:29)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 상대방 정보 -->
+                    <div class="couple-form-card partner">
+                        <div class="couple-title partner">💖 상대방 정보</div>
+                        <div class="form-group" style="margin-bottom: 12px;">
+                            <label>이름</label>
+                            <input type="text" id="chem-partner-name" class="form-control" placeholder="성춘향" style="padding: 10px;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>생년월일 / 태어난 시간</label>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <div style="display: flex; gap: 5px;">
+                                    <select id="chem-partner-year" class="form-control" style="padding: 10px; font-size: 0.85rem;"></select>
+                                    <select id="chem-partner-month" class="form-control" style="padding: 10px; font-size: 0.85rem;"></select>
+                                    <select id="chem-partner-day" class="form-control" style="padding: 10px; font-size: 0.85rem;"></select>
+                                </div>
+                                <select id="chem-partner-time" class="form-control" style="padding: 10px; font-size: 0.85rem;">
+                                    <option>태어난 시간 모름</option>
+                                    <option>자시 (23:30 ~ 01:29)</option>
+                                    <option>축시 (01:30 ~ 03:29)</option>
+                                    <option>인시 (03:30 ~ 05:29)</option>
+                                    <option>묘시 (05:30 ~ 07:29)</option>
+                                    <option>진시 (07:30 ~ 09:29)</option>
+                                    <option>사시 (09:30 ~ 11:29)</option>
+                                    <option>오시 (11:30 ~ 13:29)</option>
+                                    <option>미시 (13:30 ~ 15:29)</option>
+                                    <option>신시 (15:30 ~ 17:29)</option>
+                                    <option>유시 (17:30 ~ 19:29)</option>
+                                    <option>술시 (19:30 ~ 21:29)</option>
+                                    <option>해시 (21:30 ~ 23:29)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn" onclick="analyzeChemistry()" style="background: linear-gradient(135deg, #f2994a, #e0c3fc);">궁합 분석 시작 💞</button>
+            </div>
+            
+            <div id="chemistry-result" class="result-box">
+                <!-- 결과 렌더링 영역 -->
+            </div>
+            
             <button class="btn back-btn" onclick="showSection('main-menu')">처음으로 돌아가기</button>
         </div>
 
@@ -519,18 +842,36 @@
     <script>
         // 생년월일 드롭다운 초기화
         window.onload = function() {
-            const yearSelect = document.getElementById('saju-year');
-            const monthSelect = document.getElementById('saju-month');
-            const daySelect = document.getElementById('saju-day');
+            const selects = [
+                { y: 'saju-year', m: 'saju-month', d: 'saju-day' },
+                { y: 'chem-my-year', m: 'chem-my-month', d: 'chem-my-day' },
+                { y: 'chem-partner-year', m: 'chem-partner-month', d: 'chem-partner-day' }
+            ];
 
-            yearSelect.innerHTML = '<option value="">년도</option>';
-            for(let i = 2026; i >= 1930; i--) yearSelect.innerHTML += `<option value="${i}">${i}년</option>`;
+            selects.forEach(group => {
+                const yearSelect = document.getElementById(group.y);
+                const monthSelect = document.getElementById(group.m);
+                const daySelect = document.getElementById(group.d);
 
-            monthSelect.innerHTML = '<option value="">월</option>';
-            for(let i = 1; i <= 12; i++) monthSelect.innerHTML += `<option value="${i}">${i}월</option>`;
+                if(yearSelect) {
+                    yearSelect.innerHTML = '<option value="">년도</option>';
+                    for(let i = 2026; i >= 1930; i--) yearSelect.innerHTML += `<option value="${i}">${i}년</option>`;
+                }
+                if(monthSelect) {
+                    monthSelect.innerHTML = '<option value="">월</option>';
+                    for(let i = 1; i <= 12; i++) monthSelect.innerHTML += `<option value="${i}">${i}월</option>`;
+                }
+                if(daySelect) {
+                    daySelect.innerHTML = '<option value="">일</option>';
+                    for(let i = 1; i <= 31; i++) daySelect.innerHTML += `<option value="${i}">${i}일</option>`;
+                }
+            });
 
-            daySelect.innerHTML = '<option value="">일</option>';
-            for(let i = 1; i <= 31; i++) daySelect.innerHTML += `<option value="${i}">${i}일</option>`;
+            // Create Toast Container
+            const toastDiv = document.createElement('div');
+            toastDiv.id = 'toast-alert';
+            toastDiv.className = 'toast';
+            document.body.appendChild(toastDiv);
         };
 
         function switchTab(tabId, prefix) {
@@ -552,6 +893,7 @@
             // Reset results
             document.getElementById('tarot-result').style.display = 'none';
             document.getElementById('saju-result').style.display = 'none';
+            document.getElementById('chemistry-result').style.display = 'none';
 
             if(sectionId === 'tarot-section') {
                 renderTarotDeck();
@@ -631,6 +973,155 @@
             }
         }
 
+        // Toast Helper
+        function showToast(msg) {
+            const toast = document.getElementById('toast-alert');
+            if (!toast) return;
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2800);
+        }
+
+        // html2canvas Dynamic Loader
+        function loadHtml2Canvas(callback) {
+            if (window.html2canvas) {
+                callback();
+                return;
+            }
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+            script.onload = callback;
+            script.onerror = () => showToast('부적 이미지 저장 엔진 로드 실패. 공유하기를 이용해 주세요.');
+            document.head.appendChild(script);
+        }
+
+        // Amulet Download Helper
+        function downloadAmuletCard(elementId, filename) {
+            showToast('부적 이미지를 제작하는 중... 🌌');
+            loadHtml2Canvas(() => {
+                const element = document.getElementById(elementId);
+                const originalBoxShadow = element.style.boxShadow;
+                element.style.boxShadow = 'none'; // prevents safari canvas issues
+                
+                html2canvas(element, {
+                    useCORS: true,
+                    backgroundColor: '#0c081f',
+                    scale: 2 // High Quality
+                }).then(canvas => {
+                    element.style.boxShadow = originalBoxShadow;
+                    try {
+                        const link = document.createElement('a');
+                        link.download = `${filename}.png`;
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                        showToast('부적이 사진첩에 저장되었습니다! 💾');
+                    } catch (err) {
+                        console.error(err);
+                        showToast('저장 권한 부족. 스크린샷으로 저장해 주세요!');
+                    }
+                });
+            });
+        }
+
+        // Sharing Helper
+        function shareResult(title, text) {
+            const shareUrl = window.location.href;
+            const fullText = `${text}\n${shareUrl}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: fullText,
+                    url: shareUrl
+                }).then(() => {
+                    showToast('성공적으로 공유되었습니다! ✨');
+                }).catch(err => {
+                    if (err.name !== 'AbortError') {
+                        copyTextToClipboard(fullText);
+                    }
+                });
+            } else {
+                copyTextToClipboard(fullText);
+            }
+        }
+
+        function copyTextToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('결과가 클립보드에 복사되었습니다! 📢');
+            }).catch(err => {
+                console.error(err);
+                showToast('복사 실패. 스크린샷을 사용해 주세요!');
+            });
+        }
+
+        // Amulet HTML Generator Helper (Stage 3)
+        function generateAmuletHtml(id, name, amuletData) {
+            if(!amuletData) return '';
+            const keyword = amuletData.keyword || "행운 장착";
+            const desc = amuletData.desc || "우주가 당신의 성공을 보증합니다.";
+            const icon = amuletData.icon || "🔮";
+            const displayName = name ? name + "의 부적" : "익명의 행운 부적";
+            
+            return `
+                <div class="amulet-section">
+                    <div id="${id}" class="amulet-card">
+                        <div class="amulet-title">🌌 우주 맞춤 행운 부적 🌌</div>
+                        <div class="amulet-name">${displayName}</div>
+                        <div class="amulet-icon">${icon}</div>
+                        <div class="amulet-keyword">"${keyword}"</div>
+                        <div class="amulet-desc">${desc}</div>
+                    </div>
+                    <div class="action-btn-group">
+                        <button class="action-btn btn-save" onclick="downloadAmuletCard('${id}', '${displayName}')">
+                            💾 부적 저장
+                        </button>
+                        <button class="action-btn btn-share" onclick="shareResult('${displayName}', '🔮 [운명의 별빛] 나를 지켜줄 행운 부적 도착!\\n부적 명칭: ${keyword}\\n내 운세 보러가기 ➡️')">
+                            📢 공유하기
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Error Rendering Helper
+        function renderError(resultBox, message, type) {
+            const isRateLimit = message.includes('429') || message.toLowerCase().includes('quota') || message.toLowerCase().includes('too many requests') || message.toLowerCase().includes('rate limit');
+            
+            if (isRateLimit) {
+                resultBox.innerHTML = `
+                    <div style="padding: 25px 20px; border-radius: 15px; border: 1px solid rgba(242, 153, 74, 0.3); background: rgba(242, 153, 74, 0.05); text-align: center;">
+                        <span style="font-size: 2.5rem; display: block; margin-bottom: 12px; animation: twinkle 1s infinite alternate;">🌌</span>
+                        <h4 style="color: #f2994a; font-size: 1.1rem; margin-bottom: 10px; font-weight: bold;">우주의 기운이 잠시 붐비고 있습니다!</h4>
+                        <p style="font-size: 0.9rem; color: #b0a8b9; line-height: 1.6; word-break: keep-all; margin-bottom: 15px;">
+                            현재 많은 분들이 동시에 운명의 기운을 모으고 있어 AI 온도가 살짝 뜨거워졌습니다. 🔥<br>
+                            <strong>약 5~10초 후</strong>에 다시 한번 카드를 뽑거나 시작해 주세요!
+                        </p>
+                        <details style="margin-top: 15px; text-align: left;">
+                            <summary style="font-size: 0.75rem; color: #ff6b6b; cursor: pointer; user-select: none; opacity: 0.6;">시스템 상세 에러 보기</summary>
+                            <pre style="font-size: 0.75rem; color: #ff8a8a; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; margin-top: 8px; white-space: pre-wrap; word-break: break-all; font-family: monospace; border: 1px solid rgba(255,255,255,0.05);">${message}</pre>
+                        </details>
+                    </div>
+                `;
+            } else {
+                resultBox.innerHTML = `
+                    <div style="padding: 25px 20px; border-radius: 15px; border: 1px solid rgba(255, 107, 107, 0.3); background: rgba(255, 107, 107, 0.05); text-align: center;">
+                        <span style="font-size: 2.5rem; display: block; margin-bottom: 12px;">⚠️</span>
+                        <h4 style="color: #ff6b6b; font-size: 1.1rem; margin-bottom: 10px; font-weight: bold;">${type} 분석 중 문제가 발생했습니다</h4>
+                        <p style="font-size: 0.9rem; color: #b0a8b9; line-height: 1.6; word-break: keep-all; margin-bottom: 15px;">
+                            우주의 주파수를 맞추는 도중 예기치 못한 혼선이 생겼습니다.<br>
+                            잠시 후 다시 시도해 주시기 바랍니다.
+                        </p>
+                        <details style="margin-top: 15px; text-align: left;">
+                            <summary style="font-size: 0.75rem; color: #ff6b6b; cursor: pointer; user-select: none; opacity: 0.6;">시스템 상세 에러 보기</summary>
+                            <pre style="font-size: 0.75rem; color: #ff8a8a; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; margin-top: 8px; white-space: pre-wrap; word-break: break-all; font-family: monospace; border: 1px solid rgba(255,255,255,0.05);">${message}</pre>
+                        </details>
+                    </div>
+                `;
+            }
+        }
+
         async function drawTarotReading() {
             const resultBox = document.getElementById('tarot-result');
             
@@ -643,14 +1134,27 @@
             resultBox.style.display = 'block';
             resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             
+            const cardNames = selectedCards.map(c => c.name);
+            // 1단계: 로컬 캐싱 키 (YYYY-MM-DD + 카드조합)
+            const cacheKey = "tarot_" + new Date().toISOString().split('T')[0] + "_" + encodeURIComponent(cardNames.sort().join('_'));
+            const cachedData = localStorage.getItem(cacheKey);
+
+            if (cachedData) {
+                console.log("[Cache] Loaded tarot result from localStorage!");
+                setTimeout(() => {
+                    renderTarotResult(JSON.parse(cachedData));
+                }, 1200);
+                return;
+            }
+
             try {
                 const apiBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
                     ? 'http://localhost:3000'
-                    : 'https://saju-tarot.onrender.com';
+                    : window.location.origin;
                 const response = await fetch(`${apiBase}/api/tarot`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ cards: selectedCards.map(c => c.name) })
+                    body: JSON.stringify({ cards: cardNames })
                 });
                 
                 if (!response.ok) {
@@ -659,69 +1163,58 @@
                 }
                 const data = await response.json();
                 
-                let tabsHtml = `
-                    <div class="tab-container">
-                        <div class="tab-buttons">
-                            <button id="tarot-btn-past" class="tab-btn tarot-tab-btn active" onclick="switchTab('past', 'tarot')">🕰️ 과거 (${selectedCards[0].name.split('(')[1].replace(')','')})</button>
-                            <button id="tarot-btn-present" class="tab-btn tarot-tab-btn" onclick="switchTab('present', 'tarot')">✨ 현재 (${selectedCards[1].name.split('(')[1].replace(')','')})</button>
-                            <button id="tarot-btn-future" class="tab-btn tarot-tab-btn" onclick="switchTab('future', 'tarot')">🚀 미래 (${selectedCards[2].name.split('(')[1].replace(')','')})</button>
-                        </div>
-                        
-                        <div id="tarot-content-past" class="tab-content tarot-tab-content active">
-                            <div class="tab-quote">"${data.past?.quote || ''}"</div>
-                            <div class="tab-desc">${data.past?.desc || ''}</div>
-                        </div>
-                        <div id="tarot-content-present" class="tab-content tarot-tab-content">
-                            <div class="tab-quote">"${data.present?.quote || ''}"</div>
-                            <div class="tab-desc">${data.present?.desc || ''}</div>
-                        </div>
-                        <div id="tarot-content-future" class="tab-content tarot-tab-content">
-                            <div class="tab-quote">"${data.future?.quote || ''}"</div>
-                            <div class="tab-desc">${data.future?.desc || ''}</div>
-                        </div>
-                    </div>
-                `;
-
-                resultBox.innerHTML = `
-                    <h3 class="result-title">🌟 당신의 타로 리딩 결과</h3>
-                    ${tabsHtml}
-                `;
+                localStorage.setItem(cacheKey, JSON.stringify(data));
+                renderTarotResult(data);
             } catch (error) {
                 console.error(error);
-                const isRateLimit = error.message.includes('429') || error.message.toLowerCase().includes('quota') || error.message.toLowerCase().includes('too many requests') || error.message.toLowerCase().includes('rate limit');
-                
-                if (isRateLimit) {
-                    resultBox.innerHTML = `
-                        <div style="padding: 25px 20px; border-radius: 15px; border: 1px solid rgba(242, 153, 74, 0.3); background: rgba(242, 153, 74, 0.05); text-align: center;">
-                            <span style="font-size: 2.5rem; display: block; margin-bottom: 12px; animation: twinkle 1s infinite alternate;">🌌</span>
-                            <h4 style="color: #f2994a; font-size: 1.1rem; margin-bottom: 10px; font-weight: bold;">우주의 기운이 잠시 붐비고 있습니다!</h4>
-                            <p style="font-size: 0.9rem; color: #b0a8b9; line-height: 1.6; word-break: keep-all; margin-bottom: 15px;">
-                                현재 많은 분들이 동시에 운명의 기운을 모으고 있어 AI 온도가 살짝 뜨거워졌습니다. 🔥<br>
-                                <strong>약 5~10초 후</strong>에 다시 한번 카드를 뽑아주시면 즉시 우주의 메시지를 읽어드릴게요!
-                            </p>
-                            <details style="margin-top: 15px; text-align: left;">
-                                <summary style="font-size: 0.75rem; color: #ff6b6b; cursor: pointer; user-select: none; opacity: 0.6;">시스템 상세 에러 보기</summary>
-                                <pre style="font-size: 0.75rem; color: #ff8a8a; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; margin-top: 8px; white-space: pre-wrap; word-break: break-all; font-family: monospace; border: 1px solid rgba(255,255,255,0.05);">${error.message}</pre>
-                            </details>
-                        </div>
-                    `;
-                } else {
-                    resultBox.innerHTML = `
-                        <div style="padding: 25px 20px; border-radius: 15px; border: 1px solid rgba(255, 107, 107, 0.3); background: rgba(255, 107, 107, 0.05); text-align: center;">
-                            <span style="font-size: 2.5rem; display: block; margin-bottom: 12px;">⚠️</span>
-                            <h4 style="color: #ff6b6b; font-size: 1.1rem; margin-bottom: 10px; font-weight: bold;">운세 분석 중 문제가 발생했습니다</h4>
-                            <p style="font-size: 0.9rem; color: #b0a8b9; line-height: 1.6; word-break: keep-all; margin-bottom: 15px;">
-                                우주의 주파수를 맞추는 도중 예기치 못한 혼선이 생겼습니다.<br>
-                                잠시 후 다시 시도해 주시기 바랍니다.
-                            </p>
-                            <details style="margin-top: 15px; text-align: left;">
-                                <summary style="font-size: 0.75rem; color: #ff6b6b; cursor: pointer; user-select: none; opacity: 0.6;">시스템 상세 에러 보기</summary>
-                                <pre style="font-size: 0.75rem; color: #ff8a8a; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; margin-top: 8px; white-space: pre-wrap; word-break: break-all; font-family: monospace; border: 1px solid rgba(255,255,255,0.05);">${error.message}</pre>
-                            </details>
-                        </div>
-                    `;
-                }
+                renderError(resultBox, error.message, '타로');
             }
+        }
+
+        function renderTarotResult(data) {
+            const resultBox = document.getElementById('tarot-result');
+            
+            // 2단계: 과거, 현재, 미래 각 탭 활성화 시 내가 뽑은 카드 이미지를 크게 보여주고 그 밑에 분석 노출
+            let tabsHtml = `
+                <div class="tab-container">
+                    <div class="tab-buttons">
+                        <button id="tarot-btn-past" class="tab-btn tarot-tab-btn active" onclick="switchTab('past', 'tarot')">🕰️ 과거 (${selectedCards[0].name.split('(')[1].replace(')','')})</button>
+                        <button id="tarot-btn-present" class="tab-btn tarot-tab-btn" onclick="switchTab('present', 'tarot')">✨ 현재 (${selectedCards[1].name.split('(')[1].replace(')','')})</button>
+                        <button id="tarot-btn-future" class="tab-btn tarot-tab-btn" onclick="switchTab('future', 'tarot')">🚀 미래 (${selectedCards[2].name.split('(')[1].replace(')','')})</button>
+                    </div>
+                    
+                    <div id="tarot-content-past" class="tab-content tarot-tab-content active">
+                        <div class="large-card-container">
+                            <img src="${selectedCards[0].img}" alt="${selectedCards[0].name}" class="large-card-img">
+                        </div>
+                        <div class="tab-quote">"${data.past?.quote || ''}"</div>
+                        <div class="tab-desc">${data.past?.desc || ''}</div>
+                    </div>
+                    <div id="tarot-content-present" class="tab-content tarot-tab-content">
+                        <div class="large-card-container">
+                            <img src="${selectedCards[1].img}" alt="${selectedCards[1].name}" class="large-card-img">
+                        </div>
+                        <div class="tab-quote">"${data.present?.quote || ''}"</div>
+                        <div class="tab-desc">${data.present?.desc || ''}</div>
+                    </div>
+                    <div id="tarot-content-future" class="tab-content tarot-tab-content">
+                        <div class="large-card-container">
+                            <img src="${selectedCards[2].img}" alt="${selectedCards[2].name}" class="large-card-img">
+                        </div>
+                        <div class="tab-quote">"${data.future?.quote || ''}"</div>
+                        <div class="tab-desc">${data.future?.desc || ''}</div>
+                    </div>
+                </div>
+            `;
+
+            // 3단계: 부적 영역 생성
+            const amuletHtml = generateAmuletHtml('amulet-tarot-card', '익명', data.amulet);
+
+            resultBox.innerHTML = `
+                <h3 class="result-title">🌟 당신의 타로 리딩 결과</h3>
+                ${tabsHtml}
+                ${amuletHtml}
+            `;
             
             resultBox.style.animation = 'none';
             resultBox.offsetHeight; 
@@ -734,12 +1227,17 @@
             const resultBox = document.getElementById('saju-result');
             
             // Get user inputs
-            const name = document.getElementById('saju-name').value;
-            const region = document.getElementById('saju-region').value;
+            const name = document.getElementById('saju-name').value.trim();
+            const region = document.getElementById('saju-region').value.trim();
             const year = document.getElementById('saju-year').value;
             const month = document.getElementById('saju-month').value;
             const day = document.getElementById('saju-day').value;
             const birthTime = document.getElementById('saju-time').value;
+            
+            if(!name) {
+                showToast('이름을 입력해 주세요!');
+                return;
+            }
             
             let birthDate = "";
             if(year && month && day) birthDate = `${year}년 ${month}월 ${day}일`;
@@ -757,10 +1255,22 @@
             resultBox.style.display = 'block';
             resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
+            // 1단계: 로컬 캐싱 키 (YYYY-MM-DD + 정보)
+            const cacheKey = "saju_" + new Date().toISOString().split('T')[0] + "_" + encodeURIComponent(name + "_" + region + "_" + birthDate + "_" + birthTime);
+            const cachedData = localStorage.getItem(cacheKey);
+
+            if (cachedData) {
+                console.log("[Cache] Loaded saju result from localStorage!");
+                setTimeout(() => {
+                    renderSajuResult(JSON.parse(cachedData), name, btn, originalText);
+                }, 1200);
+                return;
+            }
+
             try {
                 const apiBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
                     ? 'http://localhost:3000'
-                    : 'https://saju-tarot.onrender.com';
+                    : window.location.origin;
                 const response = await fetch(`${apiBase}/api/saju`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -773,75 +1283,180 @@
                 }
                 const data = await response.json();
                 
-                // Render the real AI result
-                let tabsHtml = `
-                    <div class="tab-container">
-                        <div class="tab-buttons">
-                            <button id="saju-btn-today" class="tab-btn saju-tab-btn active" onclick="switchTab('today', 'saju')">🌟 올해 총운</button>
-                            <button id="saju-btn-love" class="tab-btn saju-tab-btn" onclick="switchTab('love', 'saju')">💕 연애운</button>
-                            <button id="saju-btn-wealth" class="tab-btn saju-tab-btn" onclick="switchTab('wealth', 'saju')">💰 금전운</button>
-                        </div>
-                        
-                        <div id="saju-content-today" class="tab-content saju-tab-content active">
-                            <div class="tab-quote">"${data.today?.quote || ''}"</div>
-                            <div class="tab-desc">${data.today?.desc || ''}</div>
-                        </div>
-                        <div id="saju-content-love" class="tab-content saju-tab-content">
-                            <div class="tab-quote">"${data.love?.quote || ''}"</div>
-                            <div class="tab-desc">${data.love?.desc || ''}</div>
-                        </div>
-                        <div id="saju-content-wealth" class="tab-content saju-tab-content">
-                            <div class="tab-quote">"${data.wealth?.quote || ''}"</div>
-                            <div class="tab-desc">${data.wealth?.desc || ''}</div>
-                        </div>
-                    </div>
-                `;
-
-                resultBox.innerHTML = `
-                    <h3 class="result-title">🌙 당신의 맞춤 사주 풀이</h3>
-                    ${tabsHtml}
-                `;
+                localStorage.setItem(cacheKey, JSON.stringify(data));
+                renderSajuResult(data, name, btn, originalText);
             } catch (error) {
                 console.error(error);
-                const isRateLimit = error.message.includes('429') || error.message.toLowerCase().includes('quota') || error.message.toLowerCase().includes('too many requests') || error.message.toLowerCase().includes('rate limit');
-                
-                if (isRateLimit) {
-                    resultBox.innerHTML = `
-                        <div style="padding: 25px 20px; border-radius: 15px; border: 1px solid rgba(242, 153, 74, 0.3); background: rgba(242, 153, 74, 0.05); text-align: center;">
-                            <span style="font-size: 2.5rem; display: block; margin-bottom: 12px; animation: twinkle 1s infinite alternate;">🌌</span>
-                            <h4 style="color: #f2994a; font-size: 1.1rem; margin-bottom: 10px; font-weight: bold;">우주의 기운이 잠시 붐비고 있습니다!</h4>
-                            <p style="font-size: 0.9rem; color: #b0a8b9; line-height: 1.6; word-break: keep-all; margin-bottom: 15px;">
-                                현재 많은 분들이 동시에 운명의 기운을 모으고 있어 AI 온도가 살짝 뜨거워졌습니다. 🔥<br>
-                                <strong>약 5~10초 후</strong>에 다시 한번 시작 버튼을 눌러주시면 즉시 우주의 메시지를 읽어드릴게요!
-                            </p>
-                            <details style="margin-top: 15px; text-align: left;">
-                                <summary style="font-size: 0.75rem; color: #ff6b6b; cursor: pointer; user-select: none; opacity: 0.6;">시스템 상세 에러 보기</summary>
-                                <pre style="font-size: 0.75rem; color: #ff8a8a; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; margin-top: 8px; white-space: pre-wrap; word-break: break-all; font-family: monospace; border: 1px solid rgba(255,255,255,0.05);">${error.message}</pre>
-                            </details>
-                        </div>
-                    `;
-                } else {
-                    resultBox.innerHTML = `
-                        <div style="padding: 25px 20px; border-radius: 15px; border: 1px solid rgba(255, 107, 107, 0.3); background: rgba(255, 107, 107, 0.05); text-align: center;">
-                            <span style="font-size: 2.5rem; display: block; margin-bottom: 12px;">⚠️</span>
-                            <h4 style="color: #ff6b6b; font-size: 1.1rem; margin-bottom: 10px; font-weight: bold;">운세 분석 중 문제가 발생했습니다</h4>
-                            <p style="font-size: 0.9rem; color: #b0a8b9; line-height: 1.6; word-break: keep-all; margin-bottom: 15px;">
-                                우주의 주파수를 맞추는 도중 예기치 못한 혼선이 생겼습니다.<br>
-                                잠시 후 다시 시도해 주시기 바랍니다.
-                            </p>
-                            <details style="margin-top: 15px; text-align: left;">
-                                <summary style="font-size: 0.75rem; color: #ff6b6b; cursor: pointer; user-select: none; opacity: 0.6;">시스템 상세 에러 보기</summary>
-                                <pre style="font-size: 0.75rem; color: #ff8a8a; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; margin-top: 8px; white-space: pre-wrap; word-break: break-all; font-family: monospace; border: 1px solid rgba(255,255,255,0.05);">${error.message}</pre>
-                            </details>
-                        </div>
-                    `;
-                }
+                renderError(resultBox, error.message, '사주');
+                btn.innerText = originalText;
+                btn.disabled = false;
             }
+        }
+
+        function renderSajuResult(data, name, btn, originalText) {
+            const resultBox = document.getElementById('saju-result');
+            
+            let tabsHtml = `
+                <div class="tab-container">
+                    <div class="tab-buttons">
+                        <button id="saju-btn-today" class="tab-btn saju-tab-btn active" onclick="switchTab('today', 'saju')">🌟 올해 총운</button>
+                        <button id="saju-btn-love" class="tab-btn saju-tab-btn" onclick="switchTab('love', 'saju')">💕 연애운</button>
+                        <button id="saju-btn-wealth" class="tab-btn saju-tab-btn" onclick="switchTab('wealth', 'saju')">💰 금전운</button>
+                    </div>
+                    
+                    <div id="saju-content-today" class="tab-content saju-tab-content active">
+                        <div class="tab-quote">"${data.today?.quote || ''}"</div>
+                        <div class="tab-desc">${data.today?.desc || ''}</div>
+                    </div>
+                    <div id="saju-content-love" class="tab-content saju-tab-content">
+                        <div class="tab-quote">"${data.love?.quote || ''}"</div>
+                        <div class="tab-desc">${data.love?.desc || ''}</div>
+                    </div>
+                    <div id="saju-content-wealth" class="tab-content saju-tab-content">
+                        <div class="tab-quote">"${data.wealth?.quote || ''}"</div>
+                        <div class="tab-desc">${data.wealth?.desc || ''}</div>
+                    </div>
+                </div>
+            `;
+
+            // 3단계: 부적 영역 생성
+            const amuletHtml = generateAmuletHtml('amulet-saju-card', name, data.amulet);
+
+            resultBox.innerHTML = `
+                <h3 class="result-title">🌙 당신의 맞춤 사주 풀이</h3>
+                ${tabsHtml}
+                ${amuletHtml}
+            `;
 
             btn.innerText = originalText;
             btn.disabled = false;
             
-            // Re-trigger animation
+            resultBox.style.animation = 'none';
+            resultBox.offsetHeight;
+            resultBox.style.animation = 'fadeIn 1s ease';
+        }
+
+        // 4단계: 연인 궁합 분석 로직 구현
+        async function analyzeChemistry() {
+            const btn = document.querySelector('#chemistry-section .btn');
+            const originalText = btn.innerText;
+            const resultBox = document.getElementById('chemistry-result');
+            
+            const myName = document.getElementById('chem-my-name').value.trim();
+            const partnerName = document.getElementById('chem-partner-name').value.trim();
+            
+            const myYear = document.getElementById('chem-my-year').value;
+            const myMonth = document.getElementById('chem-my-month').value;
+            const myDay = document.getElementById('chem-my-day').value;
+            const myTime = document.getElementById('chem-my-time').value;
+            
+            const partnerYear = document.getElementById('chem-partner-year').value;
+            const partnerMonth = document.getElementById('chem-partner-month').value;
+            const partnerDay = document.getElementById('chem-partner-day').value;
+            const partnerTime = document.getElementById('chem-partner-time').value;
+            
+            if(!myName || !partnerName) {
+                showToast('나와 상대방의 이름을 모두 입력해 주세요!');
+                return;
+            }
+            
+            let myBirthDate = "";
+            if(myYear && myMonth && myDay) myBirthDate = `${myYear}년 ${myMonth}월 ${myDay}일`;
+            
+            let partnerBirthDate = "";
+            if(partnerYear && partnerMonth && partnerDay) partnerBirthDate = `${partnerYear}년 ${partnerMonth}월 ${partnerDay}일`;
+            
+            btn.innerText = 'AI가 우주 궁합을 맞추는 중... 💞';
+            btn.disabled = true;
+            
+            resultBox.innerHTML = `
+                <div style="padding: 40px 20px; text-align: center; color: #f2994a;">
+                    <span style="font-size: 2rem; display: block; margin-bottom: 15px; animation: pulse 1.5s infinite;">💞</span>
+                    AI 명리 마스터가 두 사람의<br>우주 궁합(케미)을 분석 중입니다...
+                </div>
+            `;
+            resultBox.style.display = 'block';
+            resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+            // 1단계: 로컬 캐싱 키 (YYYY-MM-DD + 두사람 조합)
+            const cacheKey = "chem_" + new Date().toISOString().split('T')[0] + "_" + encodeURIComponent(myName + "_" + myBirthDate + "_" + partnerName + "_" + partnerBirthDate);
+            const cachedData = localStorage.getItem(cacheKey);
+            
+            if(cachedData) {
+                console.log("[Cache] Loaded chemistry result from localStorage!");
+                setTimeout(() => {
+                    renderChemistryResult(JSON.parse(cachedData), myName, partnerName, btn, originalText);
+                }, 1200);
+                return;
+            }
+            
+            try {
+                const apiBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
+                    ? 'http://localhost:3000'
+                    : window.location.origin;
+                const response = await fetch(`${apiBase}/api/chemistry`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        myName, myBirthDate, myBirthTime: myTime, 
+                        partnerName, partnerBirthDate, partnerBirthTime: partnerTime 
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.error || `서버 에러 (${response.status})`);
+                }
+                const data = await response.json();
+                
+                localStorage.setItem(cacheKey, JSON.stringify(data));
+                renderChemistryResult(data, myName, partnerName, btn, originalText);
+            } catch (error) {
+                console.error(error);
+                renderError(resultBox, error.message, '궁합');
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        function renderChemistryResult(data, myName, partnerName, btn, originalText) {
+            const resultBox = document.getElementById('chemistry-result');
+            
+            let tabsHtml = `
+                <div class="tab-container">
+                    <div class="tab-buttons">
+                        <button id="chem-btn-overall" class="tab-btn chem-tab-btn active" onclick="switchTab('overall', 'chem')">💞 케미 지수</button>
+                        <button id="chem-btn-synergy" class="tab-btn chem-tab-btn" onclick="switchTab('synergy', 'chem')">⚡ 시너지</button>
+                        <button id="chem-btn-conflict" class="tab-btn chem-tab-btn" onclick="switchTab('conflict', 'chem')">⚠️ 주의점</button>
+                    </div>
+                    
+                    <div id="chem-content-overall" class="tab-content chem-tab-content active">
+                        <div class="tab-quote">"${data.overall?.quote || ''}"</div>
+                        <div class="tab-desc">${data.overall?.desc || ''}</div>
+                    </div>
+                    <div id="chem-content-synergy" class="tab-content chem-tab-content">
+                        <div class="tab-quote">"${data.synergy?.quote || ''}"</div>
+                        <div class="tab-desc">${data.synergy?.desc || ''}</div>
+                    </div>
+                    <div id="chem-content-conflict" class="tab-content chem-tab-content">
+                        <div class="tab-quote">"${data.conflict?.quote || ''}"</div>
+                        <div class="tab-desc">${data.conflict?.desc || ''}</div>
+                    </div>
+                </div>
+            `;
+
+            // 3단계: 부적 영역 생성 (이름: 나❤️상대방)
+            const amuletHtml = generateAmuletHtml('amulet-chem-card', `${myName}❤️${partnerName}`, data.amulet);
+
+            resultBox.innerHTML = `
+                <h3 class="result-title">💞 두 사람의 우주 케미 궁합</h3>
+                ${tabsHtml}
+                ${amuletHtml}
+            `;
+            
+            btn.innerText = originalText;
+            btn.disabled = false;
+            
             resultBox.style.animation = 'none';
             resultBox.offsetHeight;
             resultBox.style.animation = 'fadeIn 1s ease';

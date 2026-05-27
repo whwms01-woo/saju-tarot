@@ -98,12 +98,14 @@ app.post('/api/tarot', async (req, res) => {
         1. '과거(원인)', '현재(상황)', '미래(결과/조언)' 3가지 카테고리로 나누어 답변할 것.
         2. 각 카테고리의 'desc'는 2~3문장으로 짧고 임팩트 있게 쓸 것.
         3. '~요', '~습니다' 대신 '~함', '~셈', '각' 같은 MZ 인터넷 밈이나 팩폭 말투를 사용할 것.
+        4. 추가적으로 이 타로 결과를 바탕으로 사용자를 지켜줄 유니크한 행운 부적('amulet') 정보도 같이 생성해 줘.
         
         반드시 아래 JSON 형식으로만 답변해:
         {
             "past": { "quote": "과거 핵심", "desc": "상세 풀이" },
             "present": { "quote": "현재 핵심", "desc": "상세 풀이" },
-            "future": { "quote": "미래 핵심", "desc": "상세 풀이" }
+            "future": { "quote": "미래 핵심", "desc": "상세 풀이" },
+            "amulet": { "keyword": "부적 타이틀 (예: 갓생 생존 부적)", "desc": "부적 상세 설명 (예: 숨만 쉬어도 모든 일이 술술 풀리는 마법 부적임.)", "icon": "부적에 어울리는 단일 이모지 (예: 🔮, 💫, 🪙, ⚡ 등)" }
         }`;
 
         const jsonResult = await generateGeminiContent(prompt);
@@ -132,12 +134,14 @@ app.post('/api/saju', async (req, res) => {
         1. '올해의 총운', '연애운', '금전운' 3가지 카테고리로 나누어 답변할 것.
         2. 각 카테고리의 'desc'는 2~3문장으로 짧고 임팩트 있게 쓸 것.
         3. 킹받지만 반박할 수 없는 유쾌한 말투를 사용할 것 (~임, ~셈, ~각 등).
+        4. 추가적으로 이 사주 결과를 바탕으로 사용자를 지켜줄 유니크한 행운 부적('amulet') 정보도 같이 생성해 줘.
         
         반드시 아래 JSON 형식으로만 답변해:
         {
             "today": { "quote": "올해의 총운 핵심", "desc": "상세 풀이" },
             "love": { "quote": "연애운 핵심", "desc": "상세 풀이" },
-            "wealth": { "quote": "금전운 핵심", "desc": "상세 풀이" }
+            "wealth": { "quote": "금전운 핵심", "desc": "상세 풀이" },
+            "amulet": { "keyword": "부적 타이틀 (예: 돈벼락 장착)", "desc": "부적 상세 설명 (예: 올해 지갑에 돈 마를 날이 없는 금전 만만세 부적임.)", "icon": "부적에 어울리는 단일 이모지 (예: 💸, 🛡️, 💎 등)" }
         }`;
 
         const jsonResult = await generateGeminiContent(prompt);
@@ -145,6 +149,47 @@ app.post('/api/saju', async (req, res) => {
     } catch (error) {
         console.error('Saju API Error:', error);
         res.status(500).json({ error: `사주 분석 에러: ${error.message}` });
+    }
+});
+
+// Chemistry API Endpoint (Stage 4)
+app.post('/api/chemistry', async (req, res) => {
+    try {
+        const { myName, myBirthDate, myBirthTime, partnerName, partnerBirthDate, partnerBirthTime } = req.body;
+        
+        const prompt = `너는 두 사람의 우주적 기운과 사주를 분석하여 연인 궁합을 팩트폭력적이면서도 아주 흥미진진하게 풀어주는 MZ 도사야.
+        
+        첫 번째 사람(나):
+        - 이름: ${myName || '익명'}
+        - 생년월일: ${myBirthDate || '모름'}
+        - 태어난 시간: ${myBirthTime || '모름'}
+        
+        두 번째 사람(상대방):
+        - 이름: ${partnerName || '익명'}
+        - 생년월일: ${partnerBirthDate || '모름'}
+        - 태어난 시간: ${partnerBirthTime || '모름'}
+        
+        위 정보를 바탕으로 두 사람의 우주적 궁합을 분석해 줘.
+        
+        조건:
+        1. '총평 (케미 지수)', '잘 맞는 점 (시너지)', '안 맞는 점 (경고)' 3가지 카테고리로 나누어 답변할 것.
+        2. 각 카테고리의 'desc'는 2~3문장으로 짧고 임팩트 있게 쓸 것.
+        3. 킹받지만 반박할 수 없는 유쾌한 말투를 사용할 것 (~임, ~셈, ~각 등).
+        4. 추가적으로 이 궁합 결과를 바탕으로 두 커플을 지켜줄 유니크한 행운 부적('amulet') 정보도 같이 생성해 줘.
+        
+        반드시 아래 JSON 형식으로만 답변해:
+        {
+            "overall": { "quote": "총평 핵심 (예: 케미 지수 89%)", "desc": "상세 풀이" },
+            "synergy": { "quote": "잘 맞는 부분 핵심", "desc": "상세 풀이" },
+            "conflict": { "quote": "안 맞는 부분 핵심", "desc": "상세 풀이" },
+            "amulet": { "keyword": "부적 타이틀 (예: 찰떡궁합 장착)", "desc": "부적 상세 설명 (예: 둘이 싸우려다가도 눈만 마주치면 웃음 터지는 자석 부적임.)", "icon": "부적에 어울리는 단일 이모지 (예: 💞, 🔗, 🍫 등)" }
+        }`;
+
+        const jsonResult = await generateGeminiContent(prompt);
+        res.json(jsonResult);
+    } catch (error) {
+        console.error('Chemistry API Error:', error);
+        res.status(500).json({ error: `궁합 분석 에러: ${error.message}` });
     }
 });
 
