@@ -646,6 +646,49 @@
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
+
+        /* 워터마크 스타일 복구 및 투명도 고도화 */
+        .watermark {
+            position: fixed;
+            bottom: 15px;
+            right: 20px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.18); /* 더 투명하게 처리 */
+            z-index: 1000;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* 날짜 선택박스 짤림 방지 및 스타일 최적화 */
+        .date-select-container {
+            display: flex;
+            gap: 6px;
+            width: 100%;
+        }
+        .date-select {
+            background: rgba(0, 0, 0, 0.25) !important;
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: #fff;
+            outline: none;
+            transition: border 0.3s;
+            text-align-last: center;
+            cursor: pointer;
+            height: 42px;
+        }
+        .date-select:focus {
+            border-color: var(--primary);
+        }
+        .select-year {
+            flex: 1.8;
+            padding: 8px 2px 8px 8px !important;
+            font-size: 0.88rem !important;
+        }
+        .select-month, .select-day {
+            flex: 1.1;
+            padding: 8px 2px !important;
+            font-size: 0.88rem !important;
+        }
     </style>
 </head>
 <body>
@@ -718,10 +761,10 @@
                 </div>
                 <div class="form-group">
                     <label>생년월일</label>
-                    <div style="display: flex; gap: 10px;">
-                        <select id="saju-year" class="form-control"></select>
-                        <select id="saju-month" class="form-control"></select>
-                        <select id="saju-day" class="form-control"></select>
+                    <div class="date-select-container">
+                        <select id="saju-year" class="date-select select-year"></select>
+                        <select id="saju-month" class="date-select select-month"></select>
+                        <select id="saju-day" class="date-select select-day"></select>
                     </div>
                 </div>
                 <div class="form-group">
@@ -768,10 +811,10 @@
                         <div class="form-group" style="margin-bottom: 0;">
                             <label>생년월일 / 태어난 시간</label>
                             <div style="display: flex; flex-direction: column; gap: 8px;">
-                                <div style="display: flex; gap: 5px;">
-                                    <select id="chem-my-year" class="form-control" style="padding: 10px; font-size: 0.85rem;"></select>
-                                    <select id="chem-my-month" class="form-control" style="padding: 10px; font-size: 0.85rem;"></select>
-                                    <select id="chem-my-day" class="form-control" style="padding: 10px; font-size: 0.85rem;"></select>
+                                <div class="date-select-container">
+                                    <select id="chem-my-year" class="date-select select-year"></select>
+                                    <select id="chem-my-month" class="date-select select-month"></select>
+                                    <select id="chem-my-day" class="date-select select-day"></select>
                                 </div>
                                 <select id="chem-my-time" class="form-control" style="padding: 10px; font-size: 0.85rem;">
                                     <option>태어난 시간 모름</option>
@@ -802,10 +845,10 @@
                         <div class="form-group" style="margin-bottom: 0;">
                             <label>생년월일 / 태어난 시간</label>
                             <div style="display: flex; flex-direction: column; gap: 8px;">
-                                <div style="display: flex; gap: 5px;">
-                                    <select id="chem-partner-year" class="form-control" style="padding: 10px; font-size: 0.85rem;"></select>
-                                    <select id="chem-partner-month" class="form-control" style="padding: 10px; font-size: 0.85rem;"></select>
-                                    <select id="chem-partner-day" class="form-control" style="padding: 10px; font-size: 0.85rem;"></select>
+                                <div class="date-select-container">
+                                    <select id="chem-partner-year" class="date-select select-year"></select>
+                                    <select id="chem-partner-month" class="date-select select-month"></select>
+                                    <select id="chem-partner-day" class="date-select select-day"></select>
                                 </div>
                                 <select id="chem-partner-time" class="form-control" style="padding: 10px; font-size: 0.85rem;">
                                     <option>태어난 시간 모름</option>
